@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduShare [ESEFJ] — Équipe & Contact</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;600;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ─────────────── VARIABLES ─────────────── */
+    :root {
+      --bg:         #f4f1eb;
+      --bg2:        #ede9e0;
+      --surface:    #ffffff;
+      --border:     rgba(0,0,0,.08);
+      --text:       #1a1410;
+      --text-muted: #6b5e4e;
+      --accent:     #b5541e;
+      --accent2:    #2a7a5e;
+      --gold:       #c9913a;
+      --shadow:     0 8px 40px rgba(0,0,0,.10);
+      --shadow-lg:  0 20px 60px rgba(0,0,0,.15);
+      --radius:     14px;
+      --font-body:  'Outfit', sans-serif;
+      --font-title: 'Playfair Display', serif;
+      --font-ar:    'Amiri', serif;
+      --transition: .35s cubic-bezier(.4,0,.2,1);
+    }
+    [data-theme="dark"] {
+      --bg:         #0f0d0b;
+      --bg2:        #181410;
+      --surface:    #1e1a16;
+      --border:     rgba(255,255,255,.07);
+      --text:       #f0ebe2;
+      --text-muted: #a89880;
+      --accent:     #e07040;
+      --accent2:    #3db88a;
+      --gold:       #d9a84a;
+      --shadow:     0 8px 40px rgba(0,0,0,.45);
+      --shadow-lg:  0 20px 60px rgba(0,0,0,.6);
+    }
+
+    /* ─────────────── RESET / BASE ─────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.7;
+      transition: background var(--transition), color var(--transition);
+      overflow-x: hidden;
+    }
+
+    /* RTL Arabic overrides */
+    html[dir="rtl"] .nav-links       { direction: rtl; }
+    html[dir="rtl"] .nav-right       { flex-direction: row-reverse; }
+    html[dir="rtl"] .hero-content    { text-align: right; }
+    html[dir="rtl"] .timeline-item   { flex-direction: row-reverse; text-align: right; }
+    html[dir="rtl"] .tl-dot          { order: 0; }
+    html[dir="rtl"] .value-card      { text-align: right; }
+    html[dir="rtl"] .contact-method  { flex-direction: row-reverse; text-align: right; }
+    html[dir="rtl"] .faq-q           { flex-direction: row-reverse; }
+
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 9999px; }
+
+    /* ─────────────── NOISE TEXTURE ─────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: .5;
+    }
+
+    /* ─────────────── PARTICLES ─────────────── */
+    .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .particle {
+      position: absolute; width: 4px; height: 4px;
+      background: var(--accent); border-radius: 50%; opacity: 0;
+      animation: float-up 12s infinite linear;
+    }
+    .particle:nth-child(2n) { background: var(--gold); width: 3px; height: 3px; }
+    .particle:nth-child(3n) { background: var(--accent2); width: 5px; height: 5px; }
+    @keyframes float-up {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: .6; }
+      90%  { opacity: .3; }
+      100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+    }
+
+    /* ─────────────── NAVBAR ─────────────── */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .9rem 2.5rem;
+      background: rgba(244,241,235,.82);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+    [data-theme="dark"] .navbar { background: rgba(15,13,11,.82); }
+
+    .nav-logo {
+      font-family: var(--font-title);
+      font-size: 1.35rem; font-weight: 700;
+      color: var(--text);
+      display: flex; align-items: center; gap: .55rem;
+    }
+    .nav-logo-icon {
+      width: 34px; height: 34px;
+      background: var(--accent); border-radius: 8px;
+      display: grid; place-items: center;
+      color: #fff; font-size: .85rem; flex-shrink: 0;
+      box-shadow: 0 2px 10px rgba(181,84,30,.4);
+    }
+    .nav-logo span { color: var(--accent); font-size: .75rem; font-weight: 600; letter-spacing: .04em; }
+
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-links  { display: flex; gap: .3rem; }
+    .nav-links a {
+      font-size: .88rem; font-weight: 500;
+      padding: .4rem .85rem; border-radius: 8px;
+      color: var(--text-muted); transition: all .25s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); background: var(--bg2); }
+    .nav-links a.active { color: var(--accent); }
+
+    .nav-controls { display: flex; gap: .5rem; align-items: center; }
+    .ctrl-btn {
+      width: 36px; height: 36px;
+      border: 1px solid var(--border); background: var(--surface);
+      border-radius: 9px; cursor: pointer;
+      display: grid; place-items: center;
+      font-size: .85rem; color: var(--text-muted); transition: all .25s;
+    }
+    .ctrl-btn:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.07); }
+
+    .lang-btn {
+      padding: .35rem .75rem; border-radius: 9px;
+      font-size: .78rem; font-weight: 600;
+      border: 1px solid var(--border); background: var(--surface);
+      color: var(--text-muted); cursor: pointer; transition: all .25s; letter-spacing: .04em;
+    }
+    .lang-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 2px 8px rgba(181,84,30,.35); }
+    .lang-btn:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+
+    /* ─────────────── PAGE HERO ─────────────── */
+    .page-hero {
+      min-height: 52vh;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      padding: 8rem 2rem 4rem;
+      text-align: center;
+    }
+    .page-hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 30% 50%, rgba(181,84,30,.11) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 70% at 75% 30%, rgba(201,145,58,.08) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 55% 85%, rgba(42,122,94,.06) 0%, transparent 60%);
+      animation: bg-shift 12s ease-in-out infinite alternate;
+    }
+    @keyframes bg-shift { 0% { opacity: 1; } 100% { opacity: .6; filter: hue-rotate(10deg); } }
+
+    /* Orbiting rings */
+    .hero-ring {
+      position: absolute; border-radius: 50%;
+      border: 1px solid rgba(181,84,30,.12);
+      pointer-events: none;
+    }
+    .hero-ring-1 { width: 420px; height: 420px; top: -80px; right: -80px; animation: spin-slow 35s linear infinite; }
+    .hero-ring-2 { width: 280px; height: 280px; bottom: -60px; left: -60px; animation: spin-slow 22s linear infinite reverse; border-color: rgba(201,145,58,.10); }
+    @keyframes spin-slow { to { transform: rotate(360deg); } }
+
+    .page-hero-content { position: relative; z-index: 2; max-width: 680px; }
+
+    .page-eyebrow {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .78rem; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--accent);
+      background: rgba(181,84,30,.1); border: 1px solid rgba(181,84,30,.2);
+      padding: .35rem 1rem; border-radius: 9999px;
+      margin-bottom: 1.5rem;
+      animation: fade-up .7s .1s both;
+    }
+
+    .page-hero h1 {
+      font-family: var(--font-title);
+      font-size: clamp(2.2rem, 5.5vw, 3.8rem);
+      font-weight: 900; line-height: 1.1;
+      animation: fade-up .8s .2s both;
+    }
+    html[dir="rtl"] .page-hero h1 { font-family: var(--font-ar); font-size: clamp(2rem, 5vw, 3.4rem); }
+
+    .page-hero h1 em {
+      font-style: normal; color: var(--accent);
+      position: relative; display: inline-block;
+    }
+    .page-hero h1 em::after {
+      content: ''; position: absolute; bottom: 4px; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      border-radius: 9999px;
+      transform: scaleX(0); transform-origin: left;
+      animation: line-in 1s .9s forwards;
+    }
+    @keyframes line-in { to { transform: scaleX(1); } }
+
+    .page-hero p {
+      color: var(--text-muted); font-size: 1.05rem;
+      max-width: 500px; margin: 1.2rem auto 0;
+      animation: fade-up .8s .35s both;
+    }
+    html[dir="rtl"] .page-hero p { font-family: var(--font-ar); font-size: 1.15rem; }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─────────────── CONTAINER ─────────────── */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 2rem 5rem;
+    }
+
+    /* ─────────────── SECTION TITLE ─────────────── */
+    .section-title {
+      text-align: center; margin-bottom: 3rem;
+    }
+    .section-title .label {
+      font-size: .74rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: .6rem; display: block;
+    }
+    .section-title h2 {
+      font-family: var(--font-title);
+      font-size: clamp(1.7rem, 3.5vw, 2.6rem);
+      font-weight: 800; line-height: 1.15;
+    }
+    html[dir="rtl"] .section-title h2 { font-family: var(--font-ar); }
+    .section-title p {
+      color: var(--text-muted); margin-top: .8rem;
+      font-size: .97rem; max-width: 500px; margin-left: auto; margin-right: auto;
+    }
+    html[dir="rtl"] .section-title p { font-family: var(--font-ar); font-size: 1.05rem; }
+
+    .section { padding: 4.5rem 0; }
+
+    /* ─────────────── REVEAL ─────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal:nth-child(2) { transition-delay: .08s; }
+    .reveal:nth-child(3) { transition-delay: .16s; }
+    .reveal:nth-child(4) { transition-delay: .24s; }
+    .reveal:nth-child(5) { transition-delay: .32s; }
+
+    /* ─────────────── TEAM CARDS ─────────────── */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.8rem;
+    }
+
+    .team-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.4rem 2rem 2rem;
+      text-align: center;
+      position: relative; overflow: hidden;
+      transition: all .4s cubic-bezier(.4,0,.2,1);
+    }
+    .team-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--gold), var(--accent2));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .5s ease;
+    }
+    .team-card::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(181,84,30,.05) 0%, transparent 70%);
+      opacity: 0; transition: opacity .4s;
+    }
+    .team-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+    .team-card:hover::before { transform: scaleX(1); }
+    .team-card:hover::after  { opacity: 1; }
+
+    /* avatar */
+    .avatar {
+      width: 96px; height: 96px;
+      border-radius: 50%;
+      margin: 0 auto 1.4rem;
+      position: relative; z-index: 1;
+      background: linear-gradient(135deg, var(--bg2), var(--surface));
+      border: 3px solid var(--border);
+      display: grid; place-items: center;
+      font-size: 2.2rem;
+      color: var(--text-muted);
+      transition: all .4s;
+      box-shadow: 0 4px 20px rgba(0,0,0,.1);
+    }
+    .team-card:hover .avatar {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 6px rgba(181,84,30,.12), 0 4px 20px rgba(0,0,0,.15);
+      transform: scale(1.06);
+    }
+    .avatar-initials {
+      font-family: var(--font-title);
+      font-size: 1.6rem; font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    /* badge */
+    .avatar-badge {
+      position: absolute; bottom: -2px; right: -2px;
+      width: 26px; height: 26px;
+      background: var(--accent);
+      border: 2.5px solid var(--surface);
+      border-radius: 50%;
+      display: grid; place-items: center;
+      color: #fff; font-size: .65rem;
+    }
+
+    .team-card h3 {
+      font-family: var(--font-title);
+      font-size: 1.25rem; font-weight: 700;
+      margin-bottom: .3rem; position: relative; z-index: 1;
+    }
+    html[dir="rtl"] .team-card h3 { font-family: var(--font-ar); }
+
+    .team-role {
+      display: inline-block;
+      font-size: .76rem; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--accent);
+      background: rgba(181,84,30,.1);
+      padding: .25rem .8rem; border-radius: 9999px;
+      margin-bottom: 1rem; position: relative; z-index: 1;
+    }
+
+    .team-bio {
+      color: var(--text-muted); font-size: .88rem;
+      line-height: 1.65; margin-bottom: 1.4rem;
+      position: relative; z-index: 1;
+    }
+    html[dir="rtl"] .team-bio { font-family: var(--font-ar); font-size: .98rem; }
+
+    /* major tag */
+    .team-major {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-size: .78rem; font-weight: 500;
+      color: var(--accent2); background: rgba(42,122,94,.1);
+      border: 1px solid rgba(42,122,94,.2);
+      padding: .22rem .75rem; border-radius: 9999px;
+      margin-bottom: 1.2rem; position: relative; z-index: 1;
+    }
+    html[dir="rtl"] .team-major { font-family: var(--font-ar); }
+
+    .team-socials {
+      display: flex; justify-content: center; gap: .6rem;
+      position: relative; z-index: 1;
+    }
+    .social-btn {
+      width: 36px; height: 36px;
+      border: 1px solid var(--border); border-radius: 9px;
+      background: var(--bg);
+      display: grid; place-items: center;
+      color: var(--text-muted); font-size: .85rem;
+      transition: all .25s;
+    }
+    .social-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(181,84,30,.3); }
+
+    /* ─────────────── VALUES ─────────────── */
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.4rem;
+    }
+    .value-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem;
+      transition: all .3s;
+    }
+    .value-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .value-icon {
+      width: 48px; height: 48px; border-radius: 13px;
+      display: grid; place-items: center; font-size: 1.2rem;
+      margin-bottom: 1.1rem;
+    }
+    .vi-orange { background: rgba(181,84,30,.12); color: var(--accent); }
+    .vi-green  { background: rgba(42,122,94,.12);  color: var(--accent2); }
+    .vi-gold   { background: rgba(201,145,58,.12); color: var(--gold); }
+    .vi-blue   { background: rgba(30,100,180,.12); color: #2a6bd4; }
+    [data-theme="dark"] .vi-blue { color: #60a8ff; background: rgba(60,130,220,.12); }
+
+    .value-card h4 {
+      font-family: var(--font-title);
+      font-size: 1.05rem; font-weight: 700; margin-bottom: .5rem;
+    }
+    html[dir="rtl"] .value-card h4 { font-family: var(--font-ar); }
+    .value-card p { color: var(--text-muted); font-size: .88rem; line-height: 1.6; }
+    html[dir="rtl"] .value-card p { font-family: var(--font-ar); font-size: .98rem; }
+
+    /* ─────────────── TIMELINE ─────────────── */
+    .timeline { position: relative; max-width: 720px; margin: 0 auto; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 20px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), var(--gold), var(--accent2));
+    }
+    html[dir="rtl"] .timeline::before { left: unset; right: 20px; }
+
+    .timeline-item {
+      display: flex; gap: 1.8rem;
+      margin-bottom: 2.4rem;
+      padding-left: 3.5rem;
+      position: relative;
+      align-items: flex-start;
+    }
+    html[dir="rtl"] .timeline-item { padding-left: 0; padding-right: 3.5rem; }
+
+    .tl-dot {
+      position: absolute; left: 12px; top: 6px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid var(--bg);
+      box-shadow: 0 0 0 3px rgba(181,84,30,.25);
+      flex-shrink: 0;
+      z-index: 1;
+      animation: pulse-dot 2.5s ease-in-out infinite;
+    }
+    html[dir="rtl"] .tl-dot { left: unset; right: 12px; }
+    .tl-dot:nth-child(2n)  { background: var(--gold); box-shadow: 0 0 0 3px rgba(201,145,58,.25); animation-delay: -.8s; }
+    .tl-dot:nth-child(3n)  { background: var(--accent2); box-shadow: 0 0 0 3px rgba(42,122,94,.25); animation-delay: -1.6s; }
+    @keyframes pulse-dot {
+      0%,100% { box-shadow: 0 0 0 3px rgba(181,84,30,.25); }
+      50%      { box-shadow: 0 0 0 7px rgba(181,84,30,.08); }
+    }
+
+    .tl-content {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.6rem;
+      flex: 1;
+      transition: all .3s;
+    }
+    .tl-content:hover { box-shadow: var(--shadow); transform: translateX(4px); }
+    html[dir="rtl"] .tl-content:hover { transform: translateX(-4px); }
+
+    .tl-date {
+      font-size: .72rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: .35rem;
+    }
+    .tl-content h4 {
+      font-family: var(--font-title); font-size: 1rem; font-weight: 700; margin-bottom: .35rem;
+    }
+    html[dir="rtl"] .tl-content h4 { font-family: var(--font-ar); }
+    .tl-content p { color: var(--text-muted); font-size: .87rem; line-height: 1.6; }
+    html[dir="rtl"] .tl-content p { font-family: var(--font-ar); font-size: .96rem; }
+
+    /* ─────────────── CONTACT METHODS ─────────────── */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.4rem; margin-bottom: 3rem;
+    }
+    .contact-method {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem;
+      display: flex; gap: 1.2rem; align-items: flex-start;
+      transition: all .3s;
+      position: relative; overflow: hidden;
+    }
+    .contact-method::before {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .4s;
+    }
+    .contact-method:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .contact-method:hover::before { transform: scaleX(1); }
+
+    .cm-icon {
+      width: 46px; height: 46px; border-radius: 12px;
+      display: grid; place-items: center; font-size: 1.15rem;
+      flex-shrink: 0;
+    }
+    .cm-icon.orange { background: rgba(181,84,30,.12); color: var(--accent); }
+    .cm-icon.green  { background: rgba(42,122,94,.12);  color: var(--accent2); }
+    .cm-icon.gold   { background: rgba(201,145,58,.12); color: var(--gold); }
+
+    .cm-label {
+      font-size: .72rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .1em; color: var(--text-muted); margin-bottom: .25rem;
+    }
+    .cm-value { font-weight: 600; font-size: .95rem; }
+    .cm-value a { color: var(--accent); transition: color .2s; }
+    .cm-value a:hover { color: var(--gold); }
+    html[dir="rtl"] .cm-label,
+    html[dir="rtl"] .cm-value { font-family: var(--font-ar); }
+
+    /* ─────────────── FAQ ─────────────── */
+    .faq-list { max-width: 760px; margin: 0 auto; }
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+      overflow: hidden;
+      transition: box-shadow .3s;
+    }
+    .faq-item.open { box-shadow: var(--shadow); }
+
+    .faq-q {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.25rem 1.5rem;
+      cursor: pointer; gap: 1rem;
+      user-select: none;
+    }
+    .faq-q-text { font-weight: 600; font-size: .95rem; line-height: 1.4; }
+    html[dir="rtl"] .faq-q-text { font-family: var(--font-ar); font-size: 1.05rem; }
+
+    .faq-arrow {
+      width: 30px; height: 30px; border-radius: 8px;
+      background: var(--bg2); flex-shrink: 0;
+      display: grid; place-items: center;
+      color: var(--accent); font-size: .8rem;
+      transition: all .35s;
+    }
+    .faq-item.open .faq-arrow { background: var(--accent); color: #fff; transform: rotate(180deg); }
+
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height .4s ease, padding .3s ease;
+      padding: 0 1.5rem;
+    }
+    .faq-item.open .faq-a { max-height: 300px; padding: 0 1.5rem 1.25rem; }
+    .faq-a p { color: var(--text-muted); font-size: .9rem; line-height: 1.7; }
+    html[dir="rtl"] .faq-a p { font-family: var(--font-ar); font-size: 1rem; }
+
+    /* ─────────────── CTA BOX ─────────────── */
+    .cta-box {
+      background: linear-gradient(135deg, var(--accent) 0%, #8b3a12 100%);
+      border-radius: 20px; padding: 3.5rem 2.5rem;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .cta-box::before {
+      content: '';
+      position: absolute; top: -50%; right: -20%;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: rgba(255,255,255,.07);
+      pointer-events: none;
+    }
+    .cta-box::after {
+      content: '';
+      position: absolute; bottom: -40%; left: -10%;
+      width: 300px; height: 300px; border-radius: 50%;
+      background: rgba(0,0,0,.1);
+      pointer-events: none;
+    }
+    .cta-box h2 {
+      font-family: var(--font-title);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800; color: #fff; margin-bottom: .8rem;
+      position: relative; z-index: 1;
+    }
+    html[dir="rtl"] .cta-box h2 { font-family: var(--font-ar); }
+    .cta-box p {
+      color: rgba(255,255,255,.82); font-size: .97rem;
+      max-width: 480px; margin: 0 auto 2rem;
+      position: relative; z-index: 1;
+    }
+    html[dir="rtl"] .cta-box p { font-family: var(--font-ar); font-size: 1.07rem; }
+    .cta-box-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; position: relative; z-index: 1; }
+
+    .btn-white {
+      display: inline-flex; align-items: center; gap: .6rem;
+      padding: .85rem 2rem; background: #fff; color: var(--accent);
+      border-radius: 10px; font-weight: 700; font-size: .95rem;
+      transition: all .3s; border: none; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,0,0,.2);
+    }
+    .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.3); }
+
+    .btn-outline-white {
+      display: inline-flex; align-items: center; gap: .6rem;
+      padding: .85rem 2rem; background: transparent; color: #fff;
+      border-radius: 10px; font-weight: 600; font-size: .95rem;
+      border: 2px solid rgba(255,255,255,.5); cursor: pointer; transition: all .3s;
+    }
+    .btn-outline-white:hover { background: rgba(255,255,255,.15); border-color: #fff; transform: translateY(-2px); }
+
+    /* ─────────────── DIVIDER ─────────────── */
+    .divider {
+      display: flex; align-items: center; gap: 1.2rem;
+      margin: 0 0 3rem;
+    }
+    .divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .divider i { color: var(--gold); font-size: .85rem; }
+
+    /* ─────────────── FOOTER ─────────────── */
+    footer {
+      background: var(--bg2); border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem; text-align: center;
+    }
+    .footer-logo {
+      font-family: var(--font-title); font-size: 1.3rem; font-weight: 700;
+      color: var(--accent); margin-bottom: .5rem;
+    }
+    footer p { color: var(--text-muted); font-size: .85rem; }
+    html[dir="rtl"] footer p { font-family: var(--font-ar); }
+
+    /* ─────────────── RESPONSIVE ─────────────── */
+    @media (max-width: 768px) {
+      .navbar  { padding: .75rem 1.2rem; }
+      .nav-links { display: none; }
+      .container { padding: 0 1.2rem 4rem; }
+      .page-hero  { padding: 6rem 1.2rem 3rem; }
+      .timeline::before { left: 14px; }
+      .timeline-item { padding-left: 2.6rem; }
+      html[dir="rtl"] .timeline::before { right: 14px; }
+      html[dir="rtl"] .timeline-item { padding-right: 2.6rem; }
+      .cta-box { padding: 2.5rem 1.5rem; }
+    }
+
+    /* hidden lang blocks */
+    [data-lang] { display: none; }
+    [data-lang].active-lang { display: block; }
+    span[data-lang].active-lang { display: inline; }
+    li[data-lang].active-lang   { display: flex; }
+  </style>
+</head>
+
+<body>
+
+  <!-- Particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- ════════ NAVBAR ════════ -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="nav-logo-icon"><i class="fas fa-book-open"></i></div>
+      EduShare <span>[ESEFJ]</span>
+    </div>
+
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li data-lang="fr" class="active-lang"><a href="index.html">Accueil</a></li>
+        <li data-lang="en"><a href="index.html">Home</a></li>
+        <li data-lang="ar"><a href="index.html">الرئيسية</a></li>
+
+        <li data-lang="fr" class="active-lang"><a href="courses.html">Cours</a></li>
+        <li data-lang="en"><a href="courses.html">Courses</a></li>
+        <li data-lang="ar"><a href="courses.html">الدروس</a></li>
+
+        <li data-lang="fr" class="active-lang"><a href="contact.html" class="active">Équipe & Contact</a></li>
+        <li data-lang="en"><a href="contact.html" class="active">Team & Contact</a></li>
+        <li data-lang="ar"><a href="contact.html" class="active">الفريق والتواصل</a></li>
+      </ul>
+
+      <div class="nav-controls">
+        <button class="lang-btn active" data-switch="fr">FR</button>
+        <button class="lang-btn"        data-switch="en">EN</button>
+        <button class="lang-btn"        data-switch="ar">ع</button>
+        <button class="ctrl-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ════════ PAGE HERO ════════ -->
+  <header class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="hero-ring hero-ring-1"></div>
+    <div class="hero-ring hero-ring-2"></div>
+
+    <div class="page-hero-content">
+      <div class="page-eyebrow">
+        <i class="fas fa-users"></i>
+        <span data-lang="fr" class="active-lang">L'équipe derrière EduShare</span>
+        <span data-lang="en">The team behind EduShare</span>
+        <span data-lang="ar">الفريق وراء EduShare</span>
+      </div>
+
+      <h1>
+        <span data-lang="fr" class="active-lang">Rencontrez les <em>Créateurs</em></span>
+        <span data-lang="en">Meet the <em>Creators</em></span>
+        <span data-lang="ar">تعرّف على <em>الفريق</em></span>
+      </h1>
+
+      <p>
+        <span data-lang="fr" class="active-lang">Des étudiants passionnés qui construisent quelque chose de grand pour leur communauté académique.</span>
+        <span data-lang="en">Passionate students building something great for their academic community.</span>
+        <span data-lang="ar">طلاب متحمسون يبنون شيئاً رائعاً لمجتمعهم الأكاديمي.</span>
+      </p>
+    </div>
+  </header>
+
+  <!-- ════════ MAIN ════════ -->
+  <div class="container">
+
+    <!-- ── TEAM ── -->
+    <section class="section">
+      <div class="section-title reveal">
+        <span class="label">
+          <span data-lang="fr" class="active-lang">Notre équipe</span>
+          <span data-lang="en">Our team</span>
+          <span data-lang="ar">فريقنا</span>
+        </span>
+        <h2>
+          <span data-lang="fr" class="active-lang">Les visages derrière le projet</span>
+          <span data-lang="en">The faces behind the project</span>
+          <span data-lang="ar">الوجوه خلف المشروع</span>
+        </h2>
+        <p>
+          <span data-lang="fr" class="active-lang">Étudiants de l'ESEFJ, nous partageons une passion commune : rendre l'éducation accessible à tous.</span>
+          <span data-lang="en">ESEFJ students sharing a common passion: making education accessible to all.</span>
+          <span data-lang="ar">طلاب من ESEFJ يجمعهم شغف مشترك: جعل التعليم متاحاً للجميع.</span>
+        </p>
+      </div>
+
+      <div class="team-grid">
+
+        <!-- Card 1 -->
+        <div class="team-card reveal">
+          <div class="avatar">
+            <div class="avatar-initials">WI</div>
+            <div class="avatar-badge"><i class="fas fa-crown"></i></div>
+          </div>
+          <h3>
+            <span data-lang="fr" class="active-lang">Walid Irhil</span>
+            <span data-lang="en">Walid Irhil</span>
+            <span data-lang="ar">وليد إغل</span>
+          </h3>
+          <span class="team-role">
+            <span data-lang="fr" class="active-lang">Fondateur & Développeur</span>
+            <span data-lang="en">Founder & Developer</span>
+            <span data-lang="ar">المؤسس والمطور</span>
+          </span>
+          <br/>
+          <span class="team-major">
+            <i class="fas fa-graduation-cap"></i>
+            <span data-lang="fr" class="active-lang">Enseignement secondaire Mathématiques</span>
+            <span data-lang="en">Enseignement secondaire Mathématiques</span>
+            <span data-lang="ar">التعليم الثانوي الرياضيات</span>
+          </span>
+          <p class="team-bio">
+            <span data-lang="fr" class="active-lang">Passionné par le développement web et l'éducation. J'ai créé EduShare pour aider mes camarades à accéder aux ressources dont ils ont besoin.</span>
+            <span data-lang="en">Passionate about web development and education. I created EduShare to help fellow students access the resources they need.</span>
+            <span data-lang="ar">شغوف بتطوير الويب والتعليم. أسستُ EduShare لمساعدة زملائي على الوصول للموارد التي يحتاجونها.</span>
+          </p>
+          <div class="team-socials">
+            <a href="https://www.linkedin.com/in/irhil-walid-7331283a0/" target="_blank" class="social-btn"><i class="fab fa-linkedin"></i></a>
+            <a href="https://github.com/walidirhil" target="_blank" class="social-btn"><i class="fab fa-github"></i></a>
+            <a href="mailto:irhil.w842@ucd.ac.ma" class="social-btn"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="team-card reveal">
+          <div class="avatar" style="background: linear-gradient(135deg,rgba(42,122,94,.1),var(--surface));">
+            <div class="avatar-initials" style="color:var(--accent2)">WE</div>
+            <div class="avatar-badge" style="background:var(--accent2)"><i class="fas fa-folder-open"></i></div>
+          </div>
+          <h3>
+            <span data-lang="fr" class="active-lang">Wojoud Esserhir</span>
+            <span data-lang="en">Wojoud Esserhir</span>
+            <span data-lang="ar">وجوود إسرهير</span>
+          </h3>
+          <span class="team-role" style="background:rgba(42,122,94,.1); color:var(--accent2)">
+            <span data-lang="fr" class="active-lang">Gestionnaire de Contenu</span>
+            <span data-lang="en">Content Manager</span>
+            <span data-lang="ar">مسؤول المحتوى</span>
+          </span>
+          <br/>
+          <span class="team-major">
+            <i class="fas fa-graduation-cap"></i>
+            <span data-lang="fr" class="active-lang">Enseignement secondaire Mathématiques</span>
+            <span data-lang="en">Enseignement secondaire Mathématiques</span>
+            <span data-lang="ar">التعليم الثانوي الرياضيات</span>
+          </span>
+          <p class="team-bio">
+            <span data-lang="fr" class="active-lang">Responsable de l'organisation et de la mise à jour des ressources académiques. Veille à la qualité et la pertinence de chaque document.</span>
+            <span data-lang="en">Responsible for organizing and updating academic resources. Ensures the quality and relevance of every document.</span>
+            <span data-lang="ar">مسؤول عن تنظيم وتحديث الموارد الأكاديمية. يضمن جودة وملاءمة كل وثيقة.</span>
+          </p>
+          <div class="team-socials">
+            <a href="#" class="social-btn"><i class="fab fa-linkedin"></i></a>
+            <a href="mailto:eswojoud@gmail.com" class="social-btn"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+
+        <!-- Card 3 — placeholder for future member -->
+        <div class="team-card reveal" style="border-style: dashed; opacity: .75;">
+          <div class="avatar" style="background: var(--bg2); border-style: dashed;">
+            <i class="fas fa-user-plus" style="color:var(--text-muted); font-size:1.8rem;"></i>
+          </div>
+          <h3>
+            <span data-lang="fr" class="active-lang">Rejoignez l'équipe</span>
+            <span data-lang="en">Join the Team</span>
+            <span data-lang="ar">انضم إلى الفريق</span>
+          </h3>
+          <span class="team-role" style="background:rgba(201,145,58,.1); color:var(--gold)">
+            <span data-lang="fr" class="active-lang">Poste ouvert</span>
+            <span data-lang="en">Open Position</span>
+            <span data-lang="ar">منصب شاغر</span>
+          </span>
+          <br/><br/>
+          <p class="team-bio">
+            <span data-lang="fr" class="active-lang">Vous voulez contribuer à EduShare ? Nous cherchons des étudiants motivés pour enrichir la plateforme.</span>
+            <span data-lang="en">Want to contribute to EduShare? We're looking for motivated students to enrich the platform.</span>
+            <span data-lang="ar">هل تريد المساهمة في EduShare؟ نبحث عن طلاب متحفزين لإثراء المنصة.</span>
+          </p>
+          <div class="team-socials">
+            <a href="mailto:contact@edushare-esefj.com" class="social-btn" style="background:var(--accent);color:#fff;border-color:var(--accent)"><i class="fas fa-paper-plane"></i></a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── VALUES ── -->
+    <section class="section">
+      <div class="section-title reveal">
+        <span class="label">
+          <span data-lang="fr" class="active-lang">Ce qui nous guide</span>
+          <span data-lang="en">What drives us</span>
+          <span data-lang="ar">ما يقودنا</span>
+        </span>
+        <h2>
+          <span data-lang="fr" class="active-lang">Nos valeurs</span>
+          <span data-lang="en">Our values</span>
+          <span data-lang="ar">قيمنا</span>
+        </h2>
+      </div>
+
+      <div class="values-grid">
+        <div class="value-card reveal">
+          <div class="value-icon vi-orange"><i class="fas fa-unlock-alt"></i></div>
+          <h4>
+            <span data-lang="fr" class="active-lang">Accès libre</span>
+            <span data-lang="en">Free Access</span>
+            <span data-lang="ar">وصول حر</span>
+          </h4>
+          <p>
+            <span data-lang="fr" class="active-lang">Toutes les ressources sont gratuites et accessibles sans inscription. Le savoir n'a pas de prix.</span>
+            <span data-lang="en">All resources are free and accessible without registration. Knowledge has no price.</span>
+            <span data-lang="ar">جميع الموارد مجانية ومتاحة دون تسجيل. المعرفة لا ثمن لها.</span>
+          </p>
+        </div>
+        <div class="value-card reveal">
+          <div class="value-icon vi-green"><i class="fas fa-handshake"></i></div>
+          <h4>
+            <span data-lang="fr" class="active-lang">Solidarité</span>
+            <span data-lang="en">Solidarity</span>
+            <span data-lang="ar">التضامن</span>
+          </h4>
+          <p>
+            <span data-lang="fr" class="active-lang">Nous croyons en l'entraide entre étudiants. Partager c'est doubler la connaissance.</span>
+            <span data-lang="en">We believe in mutual support among students. Sharing is doubling knowledge.</span>
+            <span data-lang="ar">نؤمن بالتعاون بين الطلاب. المشاركة تضاعف المعرفة.</span>
+          </p>
+        </div>
+        <div class="value-card reveal">
+          <div class="value-icon vi-gold"><i class="fas fa-star"></i></div>
+          <h4>
+            <span data-lang="fr" class="active-lang">Qualité</span>
+            <span data-lang="en">Quality</span>
+            <span data-lang="ar">الجودة</span>
+          </h4>
+          <p>
+            <span data-lang="fr" class="active-lang">Chaque ressource est vérifiée et organisée pour garantir un contenu pertinent et fiable.</span>
+            <span data-lang="en">Every resource is verified and organized to ensure relevant and reliable content.</span>
+            <span data-lang="ar">كل مورد يتم التحقق منه وتنظيمه لضمان محتوى ذي صلة وموثوق.</span>
+          </p>
+        </div>
+        <div class="value-card reveal">
+          <div class="value-icon vi-blue"><i class="fas fa-seedling"></i></div>
+          <h4>
+            <span data-lang="fr" class="active-lang">Croissance continue</span>
+            <span data-lang="en">Continuous Growth</span>
+            <span data-lang="ar">النمو المستمر</span>
+          </h4>
+          <p>
+            <span data-lang="fr" class="active-lang">La plateforme évolue grâce aux retours des étudiants. Votre avis façonne EduShare.</span>
+            <span data-lang="en">The platform evolves thanks to student feedback. Your opinion shapes EduShare.</span>
+            <span data-lang="ar">تتطور المنصة بفضل آراء الطلاب. رأيك يُشكّل EduShare.</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TIMELINE ── -->
+    <section class="section">
+      <div class="section-title reveal">
+        <span class="label">
+          <span data-lang="fr" class="active-lang">Notre parcours</span>
+          <span data-lang="en">Our journey</span>
+          <span data-lang="ar">مسيرتنا</span>
+        </span>
+        <h2>
+          <span data-lang="fr" class="active-lang">Histoire du projet</span>
+          <span data-lang="en">Project History</span>
+          <span data-lang="ar">تاريخ المشروع</span>
+        </h2>
+      </div>
+
+      <div class="timeline">
+
+        <div class="timeline-item reveal">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-date">
+              <span data-lang="fr" class="active-lang">Début 2026</span>
+              <span data-lang="en">Early 2026</span>
+              <span data-lang="ar">مطلع 2026</span>
+            </div>
+            <h4>
+              <span data-lang="fr" class="active-lang">L'idée est née</span>
+              <span data-lang="en">The idea was born</span>
+              <span data-lang="ar">وُلدت الفكرة</span>
+            </h4>
+            <p>
+              <span data-lang="fr" class="active-lang">Face à la difficulté de retrouver les cours éparpillés sur WhatsApp et autres groupes, l'idée d'une plateforme centralisée a émergé.</span>
+              <span data-lang="en">Struggling to find courses scattered across WhatsApp and other groups, the idea of a centralized platform emerged.</span>
+              <span data-lang="ar">واجهنا صعوبة في إيجاد الدروس المتناثرة على WhatsApp، فنشأت فكرة منصة مركزية.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-date">
+              <span data-lang="fr" class="active-lang">Janvier-2026</span>
+              <span data-lang="en">January-2026</span>
+              <span data-lang="ar">يناير 2026</span>
+            </div>
+            <h4>
+              <span data-lang="fr" class="active-lang">Développement & Design</span>
+              <span data-lang="en">Development & Design</span>
+              <span data-lang="ar">التطوير والتصميم</span>
+            </h4>
+            <p>
+              <span data-lang="fr" class="active-lang">Conception de l'interface, organisation des filières et intégration des premiers cours par l'équipe fondatrice.</span>
+              <span data-lang="en">Designing the interface, organizing majors and integrating the first courses by the founding team.</span>
+              <span data-lang="ar">تصميم الواجهة وتنظيم التخصصات وإدراج الدروس الأولى من قِبَل الفريق المؤسس.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-date">
+              <span data-lang="fr" class="active-lang">Fin Février 2026</span>
+              <span data-lang="en">Late February 2026</span>
+              <span data-lang="ar">نهاية 	فبراير 2026</span>
+            </div>
+            <h4>
+              <span data-lang="fr" class="active-lang">Lancement officiel</span>
+              <span data-lang="en">Official Launch</span>
+              <span data-lang="ar">الإطلاق الرسمي</span>
+            </h4>
+            <p>
+              <span data-lang="fr" class="active-lang">EduShare est lancé et accueille ses premiers centaines d'étudiants de l'ESEFJ El Jadida.</span>
+              <span data-lang="en">EduShare launches and welcomes its first hundreds of ESEFJ El Jadida students.</span>
+              <span data-lang="ar">أُطلق EduShare واستقبل أولى المئات من طلاب ESEFJ الجديدة.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal">
+          <div class="tl-dot"></div>
+          <div class="tl-content">
+            <div class="tl-date">
+              <span data-lang="fr" class="active-lang">2026 & au-delà</span>
+              <span data-lang="en">2026 & beyond</span>
+              <span data-lang="ar">2026 وما بعدها</span>
+            </div>
+            <h4>
+              <span data-lang="fr" class="active-lang">Expansion continue</span>
+              <span data-lang="en">Continuous expansion</span>
+              <span data-lang="ar">توسع مستمر</span>
+            </h4>
+            <p>
+              <span data-lang="fr" class="active-lang">Ajout de nouvelles filières, vidéos, fonctionnalités interactives et support multilingue complet.</span>
+              <span data-lang="en">Adding new majors, videos, interactive features and full multilingual support.</span>
+              <span data-lang="ar">إضافة تخصصات جديدة وفيديوهات وميزات تفاعلية ودعم متعدد اللغات بشكل كامل.</span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── CONTACT ── -->
+    <section class="section">
+      <div class="section-title reveal">
+        <span class="label">
+          <span data-lang="fr" class="active-lang">Prenez contact</span>
+          <span data-lang="en">Get in touch</span>
+          <span data-lang="ar">تواصل معنا</span>
+        </span>
+        <h2>
+          <span data-lang="fr" class="active-lang">Nous contacter</span>
+          <span data-lang="en">Contact Us</span>
+          <span data-lang="ar">اتصل بنا</span>
+        </h2>
+        <p>
+          <span data-lang="fr" class="active-lang">Un lien cassé ? Une suggestion ? Une erreur dans un cours ? On est là pour vous écouter.</span>
+          <span data-lang="en">A broken link? A suggestion? An error in a course? We're here to listen.</span>
+          <span data-lang="ar">رابط معطوب؟ اقتراح؟ خطأ في درس؟ نحن هنا للاستماع إليكم.</span>
+        </p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-method reveal">
+          <div class="cm-icon orange"><i class="fas fa-envelope"></i></div>
+          <div>
+            <div class="cm-label">
+              <span data-lang="fr" class="active-lang">Email</span>
+              <span data-lang="en">Email</span>
+              <span data-lang="ar">البريد الإلكتروني</span>
+            </div>
+            <div class="cm-value">
+              <a href="mailto:contact@edushare-esefj.com">contact@edushare-esefj.com</a>
+            </div>
+          </div>
+        </div>
+        <div class="contact-method reveal">
+          <div class="cm-icon green"><i class="fab fa-whatsapp"></i></div>
+          <div>
+            <div class="cm-label">
+              <span data-lang="fr" class="active-lang">WhatsApp / Groupe</span>
+              <span data-lang="en">WhatsApp / Group</span>
+              <span data-lang="ar">واتساب / المجموعة</span>
+            </div>
+            <div class="cm-value">
+              <a href="#">
+                <span data-lang="fr" class="active-lang">Rejoindre le groupe</span>
+                <span data-lang="en">Join the group</span>
+                <span data-lang="ar">انضم إلى المجموعة</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="contact-method reveal">
+          <div class="cm-icon gold"><i class="fas fa-map-marker-alt"></i></div>
+          <div>
+            <div class="cm-label">
+              <span data-lang="fr" class="active-lang">Localisation</span>
+              <span data-lang="en">Location</span>
+              <span data-lang="ar">الموقع</span>
+            </div>
+            <div class="cm-value">
+              <span data-lang="fr" class="active-lang">ESEFJ — El Jadida, Maroc</span>
+              <span data-lang="en">ESEFJ — El Jadida, Morocco</span>
+              <span data-lang="ar">ESEFJ — الجديدة، المغرب</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div class="divider"><i class="fas fa-question-circle"></i></div>
+
+      <div class="section-title reveal" style="margin-bottom:2rem">
+        <span class="label">FAQ</span>
+        <h2>
+          <span data-lang="fr" class="active-lang">Questions fréquentes</span>
+          <span data-lang="en">Frequently Asked Questions</span>
+          <span data-lang="ar">الأسئلة الشائعة</span>
+        </h2>
+      </div>
+
+      <div class="faq-list">
+
+        <div class="faq-item reveal">
+          <div class="faq-q">
+            <span class="faq-q-text">
+              <span data-lang="fr" class="active-lang">EduShare est-il gratuit ?</span>
+              <span data-lang="en">Is EduShare free?</span>
+              <span data-lang="ar">هل EduShare مجاني؟</span>
+            </span>
+            <div class="faq-arrow"><i class="fas fa-chevron-down"></i></div>
+          </div>
+          <div class="faq-a">
+            <p>
+              <span data-lang="fr" class="active-lang">Oui, totalement ! EduShare est une initiative étudiante à but non lucratif. Tous les cours et ressources sont accessibles gratuitement, sans inscription.</span>
+              <span data-lang="en">Yes, completely! EduShare is a non-profit student initiative. All courses and resources are freely accessible, no registration needed.</span>
+              <span data-lang="ar">نعم، بالكامل! EduShare مبادرة طلابية غير ربحية. جميع الدروس والموارد متاحة مجاناً دون تسجيل.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <div class="faq-q">
+            <span class="faq-q-text">
+              <span data-lang="fr" class="active-lang">Comment puis-je contribuer en partageant mes cours ?</span>
+              <span data-lang="en">How can I contribute by sharing my courses?</span>
+              <span data-lang="ar">كيف أساهم بمشاركة دروسي؟</span>
+            </span>
+            <div class="faq-arrow"><i class="fas fa-chevron-down"></i></div>
+          </div>
+          <div class="faq-a">
+            <p>
+              <span data-lang="fr" class="active-lang">Envoyez-nous vos fichiers par email ou via notre groupe WhatsApp. Notre équipe les vérifiera et les intégrera à la plateforme dans les plus brefs délais.</span>
+              <span data-lang="en">Send us your files by email or through our WhatsApp group. Our team will verify them and integrate them into the platform as soon as possible.</span>
+              <span data-lang="ar">أرسل لنا ملفاتك عبر البريد الإلكتروني أو مجموعة الواتساب. سيتحقق فريقنا منها ويضيفها للمنصة في أقرب وقت.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <div class="faq-q">
+            <span class="faq-q-text">
+              <span data-lang="fr" class="active-lang">Les documents sont-ils fiables et à jour ?</span>
+              <span data-lang="en">Are the documents reliable and up to date?</span>
+              <span data-lang="ar">هل الوثائق موثوقة ومحدّثة؟</span>
+            </span>
+            <div class="faq-arrow"><i class="fas fa-chevron-down"></i></div>
+          </div>
+          <div class="faq-a">
+            <p>
+              <span data-lang="fr" class="active-lang">Nous faisons de notre mieux pour vérifier chaque document. Si vous trouvez une erreur ou un fichier obsolète, signalez-le nous via le formulaire de contact.</span>
+              <span data-lang="en">We do our best to verify every document. If you find an error or outdated file, report it to us through the contact form.</span>
+              <span data-lang="ar">نبذل قصارى جهدنا للتحقق من كل وثيقة. إذا وجدت خطأً أو ملفاً قديماً، أخبرنا عبر نموذج الاتصال.</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item reveal">
+          <div class="faq-q">
+            <span class="faq-q-text">
+              <span data-lang="fr" class="active-lang">Puis-je rejoindre l'équipe EduShare ?</span>
+              <span data-lang="en">Can I join the EduShare team?</span>
+              <span data-lang="ar">هل يمكنني الانضمام إلى فريق EduShare؟</span>
+            </span>
+            <div class="faq-arrow"><i class="fas fa-chevron-down"></i></div>
+          </div>
+          <div class="faq-a">
+            <p>
+              <span data-lang="fr" class="active-lang">Absolument ! Nous cherchons des étudiants motivés pour enrichir la plateforme. Contactez-nous par email en expliquant votre filière et ce que vous souhaitez apporter.</span>
+              <span data-lang="en">Absolutely! We're looking for motivated students to enrich the platform. Contact us by email explaining your major and what you'd like to contribute.</span>
+              <span data-lang="ar">بالتأكيد! نبحث عن طلاب متحفزين لإثراء المنصة. راسلنا عبر البريد الإلكتروني وأخبرنا عن تخصصك وما تريد المساهمة به.</span>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── CTA ── -->
+    <section class="section" style="padding-top: 1rem;">
+      <div class="cta-box reveal">
+        <h2>
+          <span data-lang="fr" class="active-lang">Prêt à commencer ?</span>
+          <span data-lang="en">Ready to get started?</span>
+          <span data-lang="ar">مستعد للبدء؟</span>
+        </h2>
+        <p>
+          <span data-lang="fr" class="active-lang">Accédez à des centaines de cours, TD et TP de toutes les filières de l'ESEFJ El Jadida gratuitement.</span>
+          <span data-lang="en">Access hundreds of courses, tutorials and labs from all ESEFJ El Jadida majors for free.</span>
+          <span data-lang="ar">تصفّح مئات الدروس والتمارين والتطبيقات من جميع تخصصات ESEFJ الجديدة مجاناً.</span>
+        </p>
+        <div class="cta-box-actions">
+          <a href="courses.html" class="btn-white">
+            <i class="fas fa-rocket"></i>
+            <span data-lang="fr" class="active-lang">Explorer les cours</span>
+            <span data-lang="en">Explore Courses</span>
+            <span data-lang="ar">استكشف الدروس</span>
+          </a>
+          <a href="index.html" class="btn-outline-white">
+            <i class="fas fa-home"></i>
+            <span data-lang="fr" class="active-lang">Retour à l'accueil</span>
+            <span data-lang="en">Back to Home</span>
+            <span data-lang="ar">العودة للرئيسية</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ════════ FOOTER ════════ -->
+  <footer>
+    <div class="footer-logo">EduShare <span style="font-size:.85rem;color:var(--text-muted)">[ESEFJ]</span></div>
+    <p>
+      <span data-lang="fr" class="active-lang">© 2024 EduShare [ESEFJ]. Fait par des étudiants, pour des étudiants.</span>
+      <span data-lang="en">© 2024 EduShare [ESEFJ]. Built by Students, for Students.</span>
+      <span data-lang="ar">© 2024 EduShare [ESEFJ]. صُنع من الطلاب، للطلاب.</span>
+    </p>
+  </footer>
+
+  <script>
+    // ── PARTICLES ──
+    (function(){
+      const c = document.getElementById('particles');
+      for(let i=0;i<22;i++){
+        const p=document.createElement('div');
+        p.className='particle';
+        p.style.left=Math.random()*100+'vw';
+        p.style.animationDelay=Math.random()*12+'s';
+        p.style.animationDuration=(8+Math.random()*12)+'s';
+        c.appendChild(p);
+      }
+    })();
+
+    // ── LANGUAGE ──
+    const langBtns  = document.querySelectorAll('.lang-btn');
+    const langItems = document.querySelectorAll('[data-lang]');
+
+    function switchLang(lang){
+      const html = document.documentElement;
+      if(lang==='ar'){
+        html.dir='rtl'; html.lang='ar';
+        document.body.style.fontFamily="'Amiri', serif";
+      } else {
+        html.dir='ltr'; html.lang=lang;
+        document.body.style.fontFamily='';
+      }
+      langItems.forEach(el=>{
+        el.classList.toggle('active-lang', el.dataset.lang===lang);
+      });
+      langBtns.forEach(b=>b.classList.toggle('active', b.dataset.switch===lang));
+    }
+
+    langBtns.forEach(b=>b.addEventListener('click',()=>switchLang(b.dataset.switch)));
+
+    // ── DARK MODE ──
+    const themeBtn  = document.getElementById('themeToggle');
+    const themeIcon = themeBtn.querySelector('i');
+    let dark = false;
+    themeBtn.addEventListener('click',()=>{
+      dark=!dark;
+      document.documentElement.dataset.theme=dark?'dark':'';
+      themeIcon.className=dark?'fas fa-sun':'fas fa-moon';
+    });
+
+    // ── REVEAL ON SCROLL ──
+    const obs = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+    },{threshold:.12});
+    document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+    // ── FAQ ACCORDION ──
+    document.querySelectorAll('.faq-q').forEach(q=>{
+      q.addEventListener('click',()=>{
+        const item = q.closest('.faq-item');
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+        if(!wasOpen) item.classList.add('open');
+      });
+    });
+  </script>
+</body>
+</html>

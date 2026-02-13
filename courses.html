@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduShare [ESEFJ] — Cours</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;600;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ─────────────── VARIABLES ─────────────── */
+    :root {
+      --bg:         #f4f1eb;
+      --bg2:        #ede9e0;
+      --surface:    #ffffff;
+      --border:     rgba(0,0,0,.08);
+      --text:       #1a1410;
+      --text-muted: #6b5e4e;
+      --accent:     #b5541e;
+      --accent2:    #2a7a5e;
+      --gold:       #c9913a;
+      --shadow:     0 8px 40px rgba(0,0,0,.10);
+      --radius:     14px;
+      --font-body:  'Outfit', sans-serif;
+      --font-title: 'Playfair Display', serif;
+      --font-ar:    'Amiri', serif;
+      --transition: .35s cubic-bezier(.4,0,.2,1);
+    }
+    [data-theme="dark"] {
+      --bg:         #0f0d0b;
+      --bg2:        #181410;
+      --surface:    #1e1a16;
+      --border:     rgba(255,255,255,.07);
+      --text:       #f0ebe2;
+      --text-muted: #a89880;
+      --accent:     #e07040;
+      --accent2:    #3db88a;
+      --gold:       #d9a84a;
+      --shadow:     0 8px 40px rgba(0,0,0,.45);
+    }
+
+    /* ─────────────── RESET / BASE ─────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.7;
+      transition: background var(--transition), color var(--transition);
+      overflow-x: hidden;
+    }
+
+    /* RTL overrides */
+    html[dir="rtl"] .nav-links  { direction: rtl; }
+    html[dir="rtl"] .nav-right  { flex-direction: row-reverse; }
+    html[dir="rtl"] .breadcrumbs { direction: rtl; }
+    html[dir="rtl"] .page-header { text-align: right; }
+
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 9999px; }
+
+    /* ─────────────── NOISE TEXTURE ─────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: .5;
+    }
+
+    /* ─────────────── PARTICLES ─────────────── */
+    .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .particle {
+      position: absolute; width: 4px; height: 4px;
+      background: var(--accent); border-radius: 50%; opacity: 0;
+      animation: float-up 12s infinite linear;
+    }
+    .particle:nth-child(2n) { background: var(--gold); width: 3px; height: 3px; }
+    .particle:nth-child(3n) { background: var(--accent2); width: 5px; height: 5px; }
+    @keyframes float-up {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: .6; }
+      90%  { opacity: .3; }
+      100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+    }
+
+    /* ─────────────── NAVBAR ─────────────── */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .9rem 2.5rem;
+      background: rgba(244,241,235,.82);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+    [data-theme="dark"] .navbar { background: rgba(15,13,11,.82); }
+
+    .nav-logo {
+      font-family: var(--font-title);
+      font-size: 1.35rem; font-weight: 700; color: var(--text);
+      display: flex; align-items: center; gap: .55rem;
+    }
+    .nav-logo-icon {
+      width: 34px; height: 34px; background: var(--accent); border-radius: 8px;
+      display: grid; place-items: center; color: #fff; font-size: .85rem; flex-shrink: 0;
+      box-shadow: 0 2px 10px rgba(181,84,30,.4);
+    }
+    .nav-logo span { color: var(--accent); font-size: .75rem; font-weight: 600; letter-spacing: .04em; }
+
+    .nav-right { display: flex; align-items: center; gap: 1.5rem; }
+    .nav-links  { display: flex; gap: .3rem; }
+    .nav-links a {
+      font-size: .88rem; font-weight: 500; padding: .4rem .85rem;
+      border-radius: 8px; color: var(--text-muted); transition: all .25s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); background: var(--bg2); }
+    .nav-links a.active { color: var(--accent); }
+
+    .nav-controls { display: flex; gap: .5rem; align-items: center; }
+    .ctrl-btn {
+      width: 36px; height: 36px; border: 1px solid var(--border); background: var(--surface);
+      border-radius: 9px; cursor: pointer; display: grid; place-items: center;
+      font-size: .85rem; color: var(--text-muted); transition: all .25s;
+    }
+    .ctrl-btn:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.07); }
+
+    .lang-btn {
+      padding: .35rem .75rem; border-radius: 9px;
+      font-size: .78rem; font-weight: 600; letter-spacing: .04em;
+      border: 1px solid var(--border); background: var(--surface);
+      color: var(--text-muted); cursor: pointer; transition: all .25s;
+    }
+    .lang-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 2px 8px rgba(181,84,30,.35); }
+    .lang-btn:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+
+    /* ─────────────── PAGE HEADER ─────────────── */
+    .page-top {
+      padding: 7.5rem 2rem 2.5rem;
+      position: relative; overflow: hidden;
+    }
+    .page-top-bg {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 80% at 10% 50%, rgba(181,84,30,.09) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 60% at 85% 20%, rgba(201,145,58,.07) 0%, transparent 60%);
+    }
+    /* Decorative geo circle */
+    .page-top::after {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 320px; height: 320px; border-radius: 50%;
+      border: 1px solid rgba(181,84,30,.1);
+      animation: spin-slow 30s linear infinite;
+      pointer-events: none;
+    }
+    @keyframes spin-slow { to { transform: rotate(360deg); } }
+
+    /* ── page-header: exact class kept for script.js compatibility ── */
+    .page-header {
+      position: relative; z-index: 2;
+      max-width: 1120px; margin: 0 auto;
+      padding: 0 0 .5rem;
+    }
+    .page-header h2 {
+      font-family: var(--font-title);
+      font-size: clamp(1.9rem, 4.5vw, 3rem);
+      font-weight: 900; line-height: 1.1;
+      animation: fade-up .7s .1s both;
+    }
+    .page-header h2 span { color: var(--accent); }
+    html[dir="rtl"] .page-header h2 { font-family: var(--font-ar); }
+    .page-header p {
+      color: var(--text-muted); font-size: 1rem; margin-top: .5rem;
+      animation: fade-up .7s .2s both;
+    }
+    html[dir="rtl"] .page-header p { font-family: var(--font-ar); font-size: 1.1rem; }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─────────────── CONTAINER ─────────────── */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 2rem 5rem;
+      position: relative; z-index: 1;
+    }
+
+    /* ─────────────── BREADCRUMBS ─────────────── */
+    /* exact class kept — script.js adds/removes 'hidden' and injects content */
+    .breadcrumbs {
+      display: flex; align-items: center; gap: .5rem; flex-wrap: wrap;
+      padding: .75rem 1.1rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 1.8rem;
+      font-size: .84rem;
+      animation: fade-up .4s both;
+    }
+    .breadcrumbs.hidden { display: none; }
+
+    /* Style breadcrumb anchors injected by script.js */
+    .breadcrumbs a {
+      color: var(--accent); font-weight: 500; transition: color .2s;
+    }
+    .breadcrumbs a:hover { color: var(--gold); }
+    .breadcrumbs span   { color: var(--text-muted); }
+    /* separator chevron injected by script */
+    .breadcrumbs .sep {
+      color: var(--border);
+      font-size: .7rem;
+      margin: 0 .1rem;
+    }
+
+    /* ─────────────── GRID CONTAINER ─────────────── */
+    /* exact id="content-grid" & class="grid-container" kept for script.js */
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.4rem;
+      animation: fade-up .5s .1s both;
+    }
+
+    /* ─────────────── LOADER ─────────────── */
+    /* exact class="loader" kept for script.js */
+    .loader {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+      font-size: .95rem;
+      display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    }
+    .loader::before {
+      content: '';
+      width: 38px; height: 38px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─────────────── CARDS INJECTED BY SCRIPT.JS ─────────────── */
+    /*
+      script.js injects cards into #content-grid.
+      We style the common class patterns used by script.js so they
+      automatically inherit the new theme. Adjust class names below
+      to match whatever script.js generates.
+    */
+
+    /* Major / Filière card */
+    .major-card,
+    .filiere-card,
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.8rem 1.6rem;
+      cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: all .35s cubic-bezier(.4,0,.2,1);
+      display: flex; flex-direction: column; gap: .8rem;
+    }
+    .major-card::before,
+    .filiere-card::before,
+    .card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .4s;
+    }
+    .major-card:hover,
+    .filiere-card:hover,
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+    }
+    .major-card:hover::before,
+    .filiere-card:hover::before,
+    .card:hover::before { transform: scaleX(1); }
+
+    /* Icon inside card */
+    .card-icon,
+    .major-icon,
+    .filiere-icon {
+      width: 52px; height: 52px; border-radius: 13px;
+      display: grid; place-items: center; font-size: 1.4rem;
+      background: rgba(181,84,30,.1); color: var(--accent);
+      flex-shrink: 0;
+    }
+    .card-icon i, .major-icon i, .filiere-icon i { pointer-events: none; }
+
+    /* Card title */
+    .card h3,
+    .card-title,
+    .major-name,
+    .filiere-name {
+      font-family: var(--font-title);
+      font-size: 1.05rem; font-weight: 700;
+      color: var(--text); line-height: 1.3;
+    }
+    html[dir="rtl"] .card h3,
+    html[dir="rtl"] .card-title,
+    html[dir="rtl"] .major-name,
+    html[dir="rtl"] .filiere-name { font-family: var(--font-ar); }
+
+    /* Card subtitle / description */
+    .card p,
+    .card-desc,
+    .major-desc,
+    .filiere-desc {
+      color: var(--text-muted); font-size: .87rem; line-height: 1.6;
+    }
+    html[dir="rtl"] .card p,
+    html[dir="rtl"] .card-desc { font-family: var(--font-ar); font-size: .96rem; }
+
+    /* Badge / tag on card */
+    .card-badge,
+    .module-count,
+    .count-badge {
+      display: inline-flex; align-items: center; gap: .35rem;
+      font-size: .74rem; font-weight: 600;
+      color: var(--accent2); background: rgba(42,122,94,.1);
+      border: 1px solid rgba(42,122,94,.2);
+      padding: .2rem .65rem; border-radius: 9999px;
+    }
+
+    /* Arrow / chevron on card */
+    .card-arrow {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 8px;
+      background: var(--bg2); color: var(--accent);
+      font-size: .8rem; margin-top: auto; align-self: flex-end;
+      transition: all .25s;
+    }
+    .card:hover .card-arrow,
+    .major-card:hover .card-arrow { background: var(--accent); color: #fff; transform: translateX(3px); }
+    html[dir="rtl"] .card:hover .card-arrow { transform: translateX(-3px); }
+
+    /* Semester / level items */
+    .semester-card,
+    .level-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.6rem;
+      cursor: pointer;
+      transition: all .3s;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .semester-card:hover,
+    .level-card:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+      box-shadow: var(--shadow);
+    }
+    html[dir="rtl"] .semester-card:hover,
+    html[dir="rtl"] .level-card:hover { transform: translateX(-4px); }
+
+    .semester-num {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: rgba(181,84,30,.1); color: var(--accent);
+      font-family: var(--font-title); font-size: 1.1rem; font-weight: 800;
+      display: grid; place-items: center; flex-shrink: 0;
+    }
+    .semester-label { font-weight: 600; font-size: .93rem; }
+    html[dir="rtl"] .semester-label { font-family: var(--font-ar); }
+    .semester-sub { font-size: .78rem; color: var(--text-muted); margin-top: .15rem; }
+
+    /* Module / resource items */
+    .module-card,
+    .resource-card,
+    .file-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.5rem;
+      display: flex; align-items: center; gap: 1.1rem;
+      transition: all .3s; cursor: pointer;
+    }
+    .module-card:hover,
+    .resource-card:hover,
+    .file-card:hover {
+      border-color: var(--accent);
+      box-shadow: var(--shadow);
+      transform: translateY(-3px);
+    }
+
+    .file-type-icon {
+      width: 44px; height: 44px; border-radius: 11px;
+      display: grid; place-items: center; font-size: 1.15rem; flex-shrink: 0;
+    }
+    .ft-pdf   { background: rgba(220,50,50,.1);   color: #dc3232; }
+    .ft-video { background: rgba(30,100,220,.1);  color: #2a6bd4; }
+    .ft-doc   { background: rgba(30,130,180,.1);  color: #1e80b4; }
+    .ft-link  { background: rgba(42,122,94,.1);   color: var(--accent2); }
+    .ft-other { background: rgba(201,145,58,.1);  color: var(--gold); }
+
+    .resource-name { font-weight: 600; font-size: .92rem; line-height: 1.35; }
+    html[dir="rtl"] .resource-name { font-family: var(--font-ar); }
+    .resource-meta { font-size: .78rem; color: var(--text-muted); margin-top: .2rem; }
+
+    .download-btn {
+      margin-left: auto; flex-shrink: 0;
+      width: 34px; height: 34px; border-radius: 9px;
+      background: var(--bg2); color: var(--accent);
+      display: grid; place-items: center; font-size: .85rem;
+      transition: all .25s; border: 1px solid var(--border);
+    }
+    .download-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    html[dir="rtl"] .download-btn { margin-left: 0; margin-right: auto; }
+
+    /* ─────────────── EMPTY STATE ─────────────── */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center; padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+    .empty-state i { font-size: 2.5rem; margin-bottom: 1rem; color: var(--border); display: block; }
+    .empty-state p { font-size: .95rem; }
+
+    /* ─────────────── SECTION LABEL above grid ─────────────── */
+    .grid-label {
+      font-size: .74rem; font-weight: 700; letter-spacing: .13em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 1.2rem; display: block;
+    }
+
+    /* ─────────────── FOOTER ─────────────── */
+    footer {
+      background: var(--bg2); border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem; text-align: center; position: relative; z-index: 1;
+    }
+    .footer-logo {
+      font-family: var(--font-title); font-size: 1.3rem; font-weight: 700;
+      color: var(--accent); margin-bottom: .5rem;
+    }
+    footer p { color: var(--text-muted); font-size: .85rem; }
+    html[dir="rtl"] footer p { font-family: var(--font-ar); }
+
+    /* ─────────────── RESPONSIVE ─────────────── */
+    @media (max-width: 768px) {
+      .navbar   { padding: .75rem 1.2rem; }
+      .nav-links { display: none; }
+      .page-top  { padding: 6rem 1.2rem 1.5rem; }
+      .container { padding: 0 1.2rem 4rem; }
+      .grid-container { grid-template-columns: 1fr; }
+    }
+
+    /* lang blocks */
+    [data-lang]              { display: none; }
+    [data-lang].active-lang  { display: block; }
+    span[data-lang].active-lang { display: inline; }
+  </style>
+</head>
+
+<body>
+
+  <!-- Particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- ════════ NAVBAR ════════ -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="nav-logo-icon"><i class="fas fa-book-open"></i></div>
+      EduShare <span>[ESEFJ]</span>
+    </div>
+
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li data-lang="fr" class="active-lang"><a href="index.html">Accueil</a></li>
+        <li data-lang="en"><a href="index.html">Home</a></li>
+        <li data-lang="ar"><a href="index.html">الرئيسية</a></li>
+
+        <li data-lang="fr" class="active-lang"><a href="courses.html" class="active">Cours</a></li>
+        <li data-lang="en"><a href="courses.html" class="active">Courses</a></li>
+        <li data-lang="ar"><a href="courses.html" class="active">الدروس</a></li>
+
+        <li data-lang="fr" class="active-lang"><a href="contact.html">Équipe & Contact</a></li>
+        <li data-lang="en"><a href="contact.html">Team & Contact</a></li>
+        <li data-lang="ar"><a href="contact.html">الفريق والتواصل</a></li>
+      </ul>
+
+      <div class="nav-controls">
+        <button class="lang-btn active" data-switch="fr">FR</button>
+        <button class="lang-btn"        data-switch="en">EN</button>
+        <button class="lang-btn"        data-switch="ar">ع</button>
+        <button class="ctrl-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ════════ PAGE HEADER ════════ -->
+  <div class="page-top">
+    <div class="page-top-bg"></div>
+
+    <!-- class="page-header" kept exactly as original for any script.js reference -->
+    <div class="page-header">
+      <h2>
+        <span data-lang="fr" class="active-lang">Ressources <span>Académiques</span></span>
+        <span data-lang="en">Academic <span>Resources</span></span>
+        <span data-lang="ar"><span>الموارد</span> الأكاديمية</span>
+      </h2>
+      <p>
+        <span data-lang="fr" class="active-lang">Sélectionnez votre filière pour accéder aux cours, TD et TP.</span>
+        <span data-lang="en">Select your major to access lessons, tutorials and labs.</span>
+        <span data-lang="ar">اختر تخصصك للوصول إلى الدروس والتمارين والتطبيقات.</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- ════════ MAIN CONTENT ════════ -->
+  <div class="container">
+
+    <!-- BREADCRUMBS — id & class kept exactly for script.js -->
+    <div id="breadcrumbs" class="breadcrumbs hidden"></div>
+
+    <!-- CONTENT GRID — id & class kept exactly for script.js -->
+    <div id="content-grid" class="grid-container">
+      <!-- Loader — class kept exactly for script.js -->
+      <div class="loader">
+        <span data-lang="fr" class="active-lang">Chargement des ressources…</span>
+        <span data-lang="en">Loading Resources…</span>
+        <span data-lang="ar">جارٍ تحميل الموارد…</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ════════ FOOTER ════════ -->
+  <footer>
+    <div class="footer-logo">EduShare <span style="font-size:.85rem;color:var(--text-muted)">[ESEFJ]</span></div>
+    <p>
+      <span data-lang="fr" class="active-lang">© 2026 EduShare [ESEFJ]. Fait par des étudiants, pour des étudiants.</span>
+      <span data-lang="en">© 2026 EduShare [ESEFJ]. Built by Students, for Students.</span>
+      <span data-lang="ar">© 2026 EduShare [ESEFJ]. صُنع من الطلاب، للطلاب.</span>
+    </p>
+  </footer>
+
+  <!-- ════════ SCRIPTS ════════ -->
+  <script>
+    // ── PARTICLES ──
+    (function(){
+      const c = document.getElementById('particles');
+      for(let i=0;i<18;i++){
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = Math.random()*100 + 'vw';
+        p.style.animationDelay    = Math.random()*12 + 's';
+        p.style.animationDuration = (8+Math.random()*12) + 's';
+        c.appendChild(p);
+      }
+    })();
+
+    // ── LANGUAGE ──
+    const langBtns  = document.querySelectorAll('.lang-btn');
+    const langItems = document.querySelectorAll('[data-lang]');
+
+    function switchLang(lang){
+      const html = document.documentElement;
+      if(lang==='ar'){
+        html.dir='rtl'; html.lang='ar';
+        document.body.style.fontFamily="'Amiri', serif";
+      } else {
+        html.dir='ltr'; html.lang=lang;
+        document.body.style.fontFamily='';
+      }
+      langItems.forEach(el=>{
+        el.classList.toggle('active-lang', el.dataset.lang===lang);
+      });
+      langBtns.forEach(b=>b.classList.toggle('active', b.dataset.switch===lang));
+    }
+
+    langBtns.forEach(b=>b.addEventListener('click',()=>switchLang(b.dataset.switch)));
+
+    // ── DARK MODE ──
+    const themeBtn  = document.getElementById('themeToggle');
+    const themeIcon = themeBtn.querySelector('i');
+    let dark = false;
+    themeBtn.addEventListener('click',()=>{
+      dark = !dark;
+      document.documentElement.dataset.theme = dark ? 'dark' : '';
+      themeIcon.className = dark ? 'fas fa-sun' : 'fas fa-moon';
+    });
+  </script>
+
+  <!-- Original script — kept exactly as in the source file -->
+  <script src="script.js"></script>
+
+</body>
+</html>

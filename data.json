@@ -1,0 +1,161 @@
+{
+  "majors": [
+    {
+      "id": "math",
+      "name": "Mathématiques",
+      "icon": "calculator",
+      "semesters": [
+        {
+          "id": "s1",
+          "name": "Semestre 1",
+          "modules": [
+            {
+              "name": "Algèbre 2",
+              "folder": "Algèbre 2",
+              "resources": [
+                { "title": "Contrôle Alg2 2025", "type": "Exam", "format": "pdf", "path": "resources/mathematics/s1/Algèbre 2/controle/Contrôle_Alg2__2025.pdf" },
+                { "title": "Structure algébrique Pr. Rikouane", "type": "Cours", "format": "pdf", "path": "resources/mathematics/s1/Algèbre 2/coure/Alg2 structure algébrique pr.Rikouane.pdf" },
+                { "title": "Anneaux et corps", "type": "Cours", "format": "pdf", "path": "resources/mathematics/s1/Algèbre 2/coure/Anneaux et corps.pdf" },
+                { "title": "Polynomes et Fractions Rationnelles", "type": "Cours", "format": "pdf", "path": "resources/mathematics/s1/Algèbre 2/coure/POLYNOMES ET FRACTIONS RATIONNELLS.pdf" },
+                { "title": "TD1 (Suite)", "type": "TD", "format": "img", "path": "resources/mathematics/s1/Algèbre 2/TD1/TD1  (la suite).jpeg" },
+                { "title": "TD1", "type": "TD", "format": "img", "path": "resources/mathematics/s1/Algèbre 2/TD1/TD1 .jpeg" },
+                { "title": "Correction TD1 (Zip)", "type": "Correction", "format": "zip", "path": "resources/mathematics/s1/Algèbre 2/TD1/corection de TD1/WhatsApp Unknown 2025-12-12 at 17.58.31.zip" },
+                { "title": "TD 2", "type": "TD", "format": "img", "path": "resources/mathematics/s1/Algèbre 2/TD2/TD 2 .jpeg" },
+                { "title": "TD 3 Algèbre 2", "type": "TD", "format": "pdf", "path": "resources/mathematics/s1/Algèbre 2/TD3/TD3 alg2.pdf" }
+              ]
+            },
+            {
+              "name": "Algèbre 1",
+              "folder": "Algébre 1",
+              "resources": [
+                { "title": "Arithmétique dans Z", "type": "Cours", "format": "pdf", "path": "resources/mathematics/s1/Algébre 1/Coure/Arithmétique dans Z.pdf" },
+                { "title": "Logique, Ensembles et Applications", "type": "Cours", "format": "pdf", "path": "resources/mathematics/s1/Algébre 1/Coure/Logique, Ensembles et Applications.pdf" },
+                { "title": "Relations binaires", "type": "Cours", "format": "pdf", "path": "resources/mathematics/s1/Algébre 1/Coure/Relations binaires.pdf" },
+                { "title": "TD 1", "type": "TD", "format": "pdf", "path": "resources/mathematics/s1/Algébre 1/TD/TD 1.pdf" },
+                { "title": "Contrôle Alg1 (Achak)", "type": "Exam", "format": "img", "path": "resources/mathematics/s1/Algébre 1/examen/controle/controle alg1 Achak .jpeg" },
+                { "title": "Contrôle Alg1", "type": "Exam", "format": "img", "path": "resources/mathematics/s1/Algébre 1/examen/controle/controle alg1/controle alg1.jpeg" },
+                { "title": "Correction Contrôle (Img 1)", "type": "Correction", "format": "img", "path": "resources/mathematics/s1/Algébre 1/examen/controle/controle alg1/corection/1.jpeg" },
+                { "title": "Contrôle 2023-2024", "type": "Exam", "format": "img", "path": "resources/mathematics/s1/Algébre 1/examen/controle/controle alg1 2023-2024/controle alg1 2023_2024.jpeg" },
+                { "title": "Exam 2021-2022", "type": "Exam", "format": "img", "path": "resources/mathematics/s1/Algébre 1/examen/exam/2021_2022.jpg" },
+                { "title": "Exam 2022-2023", "type": "Exam", "format": "img", "path": "resources/mathematics/s1/Algébre 1/examen/exam/2022_2023.jpg" },
+                { "title": "Exam Normal 2024-2025", "type": "Exam", "format": "img", "path": "resources/mathematics/s1/Algébre 1/examen/exam/exam N 2024_2025.jpg" },
+                { "title": "Exam Rattrapage 2024-2025", "type": "Exam", "format": "img", "path": "resources/mathematics/s1/Algébre 1/examen/exam/exam rat 2024_2025.jpg" }
+              ]
+            },
+            {
+              "name": "Analyse 1",
+              "folder": "Analyse 1",
+              "resources": [
+                { "title": "Chapitre 1", "type": "Cours", "format": "pdf", "path": "resources/mathematics/s1/Analyse 1/coure/Chapitre 1 .pdf" },
+                { "title": "Chapitre 2", "type": "Cours", "format": "pdf", "path": "resources/mathematics/s1/Analyse 1/coure/Chapitre 2.pdf" },
+                { "title": "Chapitre 3 (Continuité)", "type": "Cours", "format": "pdf", "path": "resources/mathematics/s1/Analyse 1/coure/Chapitre 3 Continuité d_une fonction à variable réelle.pdf" },
+                { "title": "Chapitre 4 (Dérivabilité)", "type": "Cours", "format": "pdf", "path": "resources/mathematics/s1/Analyse 1/coure/Chapitre 4 Dérivabilité.pdf" },
+                { "title": "Série 1", "type": "TD", "format": "pdf", "path": "resources/mathematics/s1/Analyse 1/TD/série 1 (Analyse 1).pdf" },
+                { "title": "Série 2", "type": "TD", "format": "pdf", "path": "resources/mathematics/s1/Analyse 1/TD/série 2 Analyse 1 .pdf" },
+                { "title": "Série 3", "type": "TD", "format": "pdf", "path": "resources/mathematics/s1/Analyse 1/TD/série 3 Analyse 1.pdf" },
+                { "title": "Série 4", "type": "TD", "format": "pdf", "path": "resources/mathematics/s1/Analyse 1/TD/série 4 Analyse 1 .pdf" },
+                { "title": "Contrôle Analyse 1", "type": "Exam", "format": "img", "path": "resources/mathematics/s1/Analyse 1/controle - exam/controle analyse1 .jpeg" },
+                { "title": "Exam 2023-2024", "type": "Exam", "format": "img", "path": "resources/mathematics/s1/Analyse 1/controle - exam/2023_2024.jpg" },
+                { "title": "Exam 2024-2025", "type": "Exam", "format": "img", "path": "resources/mathematics/s1/Analyse 1/controle - exam/exam analyse1 2024_2025 .jpeg" },
+                { "title": "Rattrapage 2024-2025", "type": "Exam", "format": "img", "path": "resources/mathematics/s1/Analyse 1/controle - exam/Rat Analyse1 2024_2025 .jpeg" }
+              ]
+            },
+            {
+              "name": "Digital Skills - MTU",
+              "folder": "Digital skills - MTU",
+              "resources": [
+                { "title": "Anglais", "type": "Cours", "format": "pdf", "path": "resources/mathematics/s1/Digital skills  - MTU/ang.pdf" },
+                { "title": "Présentation MTU", "type": "Cours", "format": "pptx", "path": "resources/mathematics/s1/Digital skills  - MTU/MTU.pptx" },
+                { "title": "Internet Part 2", "type": "DS", "format": "pdf", "path": "resources/mathematics/s1/Digital skills  - MTU/digital skills/internet part 2.pdf" },
+                { "title": "Internet Part 1", "type": "DS", "format": "pdf", "path": "resources/mathematics/s1/Digital skills  - MTU/digital skills/part1.pdf" },
+                { "title": "Power Point", "type": "DS", "format": "pdf", "path": "resources/mathematics/s1/Digital skills  - MTU/digital skills/Power point.pdf" },
+                { "title": "Recherche Documentaire", "type": "DS", "format": "pdf", "path": "resources/mathematics/s1/Digital skills  - MTU/digital skills/recherche documentarire.pdf" },
+                { "title": "Séquence Word", "type": "DS", "format": "pdf", "path": "resources/mathematics/s1/Digital skills  - MTU/digital skills/Séquence  word.pdf" },
+                { "title": "Séquence Excel", "type": "DS", "format": "pdf", "path": "resources/mathematics/s1/Digital skills  - MTU/digital skills/Séquence Excel.pdf" }
+              ]
+            },
+            {
+              "name": "Informatique 1",
+              "folder": "Informatique 1",
+              "resources": [
+                { "title": "Introduction à l'informatique", "type": "Cours", "format": "pdf", "path": "resources/mathematics/s1/Informatique 1/coure/Introduction à l_informatique LICENCE MATH S1 (1).pdf" },
+                { "title": "TD 3 Info", "type": "TD", "format": "pdf", "path": "resources/mathematics/s1/Informatique 1/TD3/TD3 info.pdf" }
+              ]
+            },
+            {
+              "name": "Statistiques et probabilité",
+              "folder": "Statistiques et probabilité",
+              "resources": [
+                { "title": "Probabilités", "type": "Cours", "format": "pdf", "path": "resources/mathematics/s1/Statistiques et probabilité/proba/Probabilites.pdf" },
+                { "title": "Correction Ex 4,8 (Proba)", "type": "Correction", "format": "pdf", "path": "resources/mathematics/s1/Statistiques et probabilité/proba/corection de EX4,8(proba).pdf" },
+                { "title": "Correction Ex 9-14", "type": "Correction", "format": "pdf", "path": "resources/mathematics/s1/Statistiques et probabilité/proba/corection deEX9-14.pdf" },
+                { "title": "Statistique Descriptive & Intro Proba", "type": "Cours", "format": "pdf", "path": "resources/mathematics/s1/Statistiques et probabilité/statistique/Statdescet intr prob 25 26_251021_125015.pdf" },
+                { "title": "TD 1 Statistique", "type": "TD", "format": "pdf", "path": "resources/mathematics/s1/Statistiques et probabilité/statistique/TD/TD 1 LEM S1 25 26_251103_093825.pdf" },
+                { "title": "TD 2 Statistique", "type": "TD", "format": "pdf", "path": "resources/mathematics/s1/Statistiques et probabilité/statistique/TD/TD 2 LEM S1 25 26_251110_162036 (2).pdf" },
+                { "title": "Exam Stati N 2024_2025", "type": "Exam", "format": "img", "path": "resources/mathematics/s1/Statistiques et probabilité/statistique/exam de stati/exam stati N 2024_2025.jpg" },
+                { "title": "Contrôle Stati Proba", "type": "Exam", "format": "img", "path": "resources/mathematics/s1/Statistiques et probabilité/statistique/exam de stati/controle/controle stati proba .jpeg" }
+              ]
+            },
+            {
+              "name": "Thermodynamique",
+              "folder": "Thermodynamique",
+              "resources": [
+                { "title": "Cours Thermodynamique", "type": "Cours", "format": "pdf", "path": "resources/mathematics/s1/Thermodynamique/coure/THERMO.pdf" },
+                { "title": "TD 1", "type": "TD", "format": "img", "path": "resources/mathematics/s1/Thermodynamique/TD/TD1.jpg" },
+                { "title": "TD 2", "type": "TD", "format": "pdf", "path": "resources/mathematics/s1/Thermodynamique/TD/TD2/TD2 (thermo).pdf" },
+                { "title": "Correction TD 2", "type": "Correction", "format": "pdf", "path": "resources/mathematics/s1/Thermodynamique/TD/TD2/Correction TD 2 (1).pdf" },
+                { "title": "Contrôle Thermodynamique", "type": "Exam", "format": "pdf", "path": "resources/mathematics/s1/Thermodynamique/exam/controle/contrôle de thermodynamique .pdf" },
+                { "title": "Exam N", "type": "Exam", "format": "img", "path": "resources/mathematics/s1/Thermodynamique/exam/exam de N/exan N (5).jpeg" },
+                { "title": "Exam Rat (Suite)", "type": "Exam", "format": "img", "path": "resources/mathematics/s1/Thermodynamique/exam/exam de rat/la suite.jpg" },
+                { "title": "Examen", "type": "Exam", "format": "img", "path": "resources/mathematics/s1/Thermodynamique/exam/examen/examen.jpg" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "s2",
+          "name": "Semestre 2",
+          "modules": [
+            {
+              "name": "Algèbre 3",
+              "folder": "Algèbre 3",
+              "resources": [
+                { "title": "Correction TD 1 Algèbre 3", "type": "TD", "format": "pdf", "path": "resources/mathematics/S2/Algèbre 3/Correction de Td n⁰ 1-Alg 3.pdf" },
+                { "title": "Cours Page 1", "type": "Cours", "format": "img", "path": "resources/mathematics/S2/Algèbre 3/Cours/IMG-20250402-WA0029.jpg" },
+                { "title": "Cours Page 2", "type": "Cours", "format": "img", "path": "resources/mathematics/S2/Algèbre 3/Cours/IMG-20250402-WA0030.jpg" },
+                { "title": "Cours Page 3", "type": "Cours", "format": "img", "path": "resources/mathematics/S2/Algèbre 3/Cours/IMG-20250402-WA0031.jpg" },
+                { "title": "Cours Page 4", "type": "Cours", "format": "img", "path": "resources/mathematics/S2/Algèbre 3/Cours/IMG-20250402-WA0032.jpg" },
+                { "title": "Cours Page 5", "type": "Cours", "format": "img", "path": "resources/mathematics/S2/Algèbre 3/Cours/IMG-20250402-WA0033.jpg" }
+              ]
+            },
+            {
+              "name": "Analyse 3",
+              "folder": "Analyse 3",
+              "resources": [
+                { "title": "Correction TD 1 Analyse 3", "type": "TD", "format": "pdf", "path": "resources/mathematics/S2/Analyse 3/Correction-Td n⁰1 -analyse -3.pdf" },
+                { "title": "Polycopié Exercices Corrigés Optique", "type": "TD", "format": "pdf", "path": "resources/mathematics/S2/Analyse 3/cour/Polycopie-dexercices-corriges-doptique-geometrique_copy.pdf" },
+                { "title": "Cours Page 1", "type": "Cours", "format": "img", "path": "resources/mathematics/S2/Analyse 3/cour/IMG-20250402-WA0015.jpg" }
+              ]
+            },
+            {
+              "name": "Informatique 2",
+              "folder": "Informatique 2",
+              "resources": [
+                { "title": "Algorithmique et Programmation S2", "type": "Cours", "format": "pdf", "path": "resources/mathematics/S2/Informatique 2/Cours/Algorithmique et programmation S2.pdf" },
+                { "title": "TD 1", "type": "TD", "format": "pdf", "path": "resources/mathematics/S2/Informatique 2/TD/TD1 (1).pdf" }
+              ]
+            },
+            {
+              "name": "Électrostatique - Magnéto",
+              "folder": "Électrostatique - magnéto",
+              "resources": [
+                { "title": "Rappel Mathématique", "type": "Cours", "format": "pdf", "path": "resources/mathematics/S2/Électrostatique - magnéto/Cours/Rappel mathématique_.pdf" },
+                { "title": "Schéma Cours", "type": "Cours", "format": "img", "path": "resources/mathematics/S2/Électrostatique - magnéto/FB_IMG_1586443322044(1).jpg" }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduShare [ESEFJ]</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;600;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    /* ─────────────── VARIABLES ─────────────── */
+    :root {
+      --bg:         #f4f1eb;
+      --bg2:        #ede9e0;
+      --surface:    #ffffff;
+      --border:     rgba(0,0,0,.08);
+      --text:       #1a1410;
+      --text-muted: #6b5e4e;
+      --accent:     #b5541e;
+      --accent2:    #2a7a5e;
+      --gold:       #c9913a;
+      --shadow:     0 8px 40px rgba(0,0,0,.10);
+      --radius:     14px;
+      --font-body:  'Outfit', sans-serif;
+      --font-title: 'Playfair Display', serif;
+      --font-ar:    'Amiri', serif;
+      --transition: .35s cubic-bezier(.4,0,.2,1);
+    }
+    [data-theme="dark"] {
+      --bg:         #0f0d0b;
+      --bg2:        #181410;
+      --surface:    #1e1a16;
+      --border:     rgba(255,255,255,.07);
+      --text:       #f0ebe2;
+      --text-muted: #a89880;
+      --accent:     #e07040;
+      --accent2:    #3db88a;
+      --gold:       #d9a84a;
+      --shadow:     0 8px 40px rgba(0,0,0,.45);
+    }
+
+    /* ─────────────── RESET / BASE ─────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.7;
+      transition: background var(--transition), color var(--transition);
+      overflow-x: hidden;
+    }
+    [lang="ar"] body, body.ar { font-family: var(--font-ar); }
+
+    /* Arabic RTL overrides */
+    html[dir="rtl"] .nav-links { direction: rtl; }
+    html[dir="rtl"] .nav-right { flex-direction: row-reverse; }
+    html[dir="rtl"] .hero-content { text-align: right; }
+    html[dir="rtl"] .hero-actions { justify-content: flex-end; }
+    html[dir="rtl"] .card-icon { margin-left: auto; margin-right: 0; }
+    html[dir="rtl"] .stat-item { direction: rtl; }
+    html[dir="rtl"] .info-list li { direction: rtl; padding-left: 0; padding-right: 1.6rem; }
+    html[dir="rtl"] .info-list li::before { left: unset; right: 0; }
+
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ─────────────── SCROLLBAR ─────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 9999px; }
+
+    /* ─────────────── NOISE TEXTURE overlay ─────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: .5;
+    }
+
+    /* ─────────────── FLOATING PARTICLES ─────────────── */
+    .particles { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+    .particle {
+      position: absolute;
+      width: 4px; height: 4px;
+      background: var(--accent);
+      border-radius: 50%;
+      opacity: 0;
+      animation: float-up 12s infinite linear;
+    }
+    .particle:nth-child(2n) { background: var(--gold); width: 3px; height: 3px; }
+    .particle:nth-child(3n) { background: var(--accent2); width: 5px; height: 5px; }
+    @keyframes float-up {
+      0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+      10%  { opacity: .6; }
+      90%  { opacity: .3; }
+      100% { transform: translateY(-100px) scale(1.5); opacity: 0; }
+    }
+
+    /* ─────────────── NAVBAR ─────────────── */
+    .navbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .9rem 2.5rem;
+      background: rgba(244,241,235,.82);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      transition: background var(--transition);
+    }
+    [data-theme="dark"] .navbar { background: rgba(15,13,11,.82); }
+
+    .nav-logo {
+      font-family: var(--font-title);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text);
+      display: flex; align-items: center; gap: .55rem;
+    }
+    .nav-logo-icon {
+      width: 34px; height: 34px;
+      background: var(--accent);
+      border-radius: 8px;
+      display: grid; place-items: center;
+      color: #fff;
+      font-size: .85rem;
+      flex-shrink: 0;
+      box-shadow: 0 2px 10px rgba(181,84,30,.4);
+    }
+    .nav-logo span { color: var(--accent); font-size: .75rem; font-weight: 600; letter-spacing: .04em; }
+
+    .nav-right {
+      display: flex; align-items: center; gap: 1.5rem;
+    }
+    .nav-links {
+      display: flex; gap: .3rem;
+    }
+    .nav-links a {
+      font-size: .88rem; font-weight: 500;
+      padding: .4rem .85rem;
+      border-radius: 8px;
+      color: var(--text-muted);
+      transition: all .25s;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--text);
+      background: var(--bg2);
+    }
+    .nav-links a.active { color: var(--accent); }
+
+    .nav-controls {
+      display: flex; gap: .5rem; align-items: center;
+    }
+    .ctrl-btn {
+      width: 36px; height: 36px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      border-radius: 9px;
+      cursor: pointer;
+      display: grid; place-items: center;
+      font-size: .85rem;
+      color: var(--text-muted);
+      transition: all .25s;
+    }
+    .ctrl-btn:hover { border-color: var(--accent); color: var(--accent); transform: scale(1.07); }
+
+    .lang-btn {
+      padding: .35rem .75rem;
+      border-radius: 9px;
+      font-size: .78rem; font-weight: 600;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all .25s;
+      letter-spacing: .04em;
+    }
+    .lang-btn.active {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgba(181,84,30,.35);
+    }
+    .lang-btn:hover:not(.active) { border-color: var(--accent); color: var(--accent); }
+
+    /* ─────────────── HERO ─────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 6rem 2rem 4rem;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 50%, rgba(181,84,30,.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 30%, rgba(201,145,58,.09) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 50% at 60% 80%, rgba(42,122,94,.07) 0%, transparent 60%);
+      animation: bg-shift 12s ease-in-out infinite alternate;
+    }
+    @keyframes bg-shift {
+      0%   { opacity: 1; }
+      100% { opacity: .6; filter: hue-rotate(15deg); }
+    }
+
+    /* Decorative geometric lines */
+    .hero-geo {
+      position: absolute; inset: 0; pointer-events: none;
+      overflow: hidden;
+    }
+    .hero-geo::before {
+      content: '';
+      position: absolute; top: -10%; right: -5%;
+      width: 500px; height: 500px;
+      border: 1.5px solid rgba(181,84,30,.15);
+      border-radius: 50%;
+      animation: spin-slow 30s linear infinite;
+    }
+    .hero-geo::after {
+      content: '';
+      position: absolute; bottom: -15%; left: -8%;
+      width: 400px; height: 400px;
+      border: 1px solid rgba(201,145,58,.10);
+      border-radius: 50%;
+      animation: spin-slow 20s linear infinite reverse;
+    }
+    @keyframes spin-slow { to { transform: rotate(360deg); } }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      max-width: 780px;
+      text-align: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .78rem; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(181,84,30,.1);
+      border: 1px solid rgba(181,84,30,.2);
+      padding: .35rem 1rem;
+      border-radius: 9999px;
+      margin-bottom: 1.8rem;
+      animation: fade-up .7s .1s both;
+    }
+    .hero-eyebrow i { font-size: .7rem; }
+
+    .hero h1 {
+      font-family: var(--font-title);
+      font-size: clamp(2.8rem, 7vw, 5.2rem);
+      font-weight: 900;
+      line-height: 1.05;
+      color: var(--text);
+      animation: fade-up .8s .2s both;
+    }
+    html[dir="rtl"] .hero h1 { font-family: var(--font-ar); font-size: clamp(2.4rem, 6vw, 4.5rem); }
+
+    .hero h1 .accent-word { color: var(--accent); position: relative; display: inline-block; }
+    .hero h1 .accent-word::after {
+      content: '';
+      position: absolute; bottom: 4px; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      border-radius: 9999px;
+      transform: scaleX(0); transform-origin: left;
+      animation: underline-in 1s .9s forwards;
+    }
+    @keyframes underline-in { to { transform: scaleX(1); } }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 540px;
+      margin: 1.6rem auto 0;
+      animation: fade-up .8s .35s both;
+    }
+    html[dir="rtl"] .hero-sub { font-family: var(--font-ar); font-size: 1.25rem; }
+
+    .hero-actions {
+      display: flex; gap: 1rem; justify-content: center;
+      margin-top: 2.5rem;
+      flex-wrap: wrap;
+      animation: fade-up .8s .5s both;
+    }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: .6rem;
+      padding: .85rem 2rem;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 10px;
+      font-weight: 600; font-size: .95rem;
+      border: none; cursor: pointer;
+      box-shadow: 0 4px 20px rgba(181,84,30,.35);
+      transition: all .3s;
+      position: relative; overflow: hidden;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,.12);
+      transform: translateX(-110%) skewX(-20deg);
+      transition: transform .5s;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(181,84,30,.5); }
+    .btn-primary:hover::before { transform: translateX(110%) skewX(-20deg); }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: .6rem;
+      padding: .85rem 2rem;
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 10px;
+      font-weight: 500; font-size: .95rem;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all .3s;
+    }
+    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+
+    /* ─────────────── STATS BAND ─────────────── */
+    .stats-band {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 2.2rem 2rem;
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 0;
+    }
+    .stat-item {
+      flex: 1; min-width: 160px; max-width: 240px;
+      text-align: center;
+      padding: 0 2rem;
+      border-right: 1px solid var(--border);
+      animation: fade-up .7s both;
+    }
+    .stat-item:last-child { border-right: none; }
+    html[dir="rtl"] .stat-item { border-right: none; border-left: 1px solid var(--border); }
+    html[dir="rtl"] .stat-item:first-child { border-left: none; }
+
+    .stat-number {
+      font-family: var(--font-title);
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: .25rem;
+    }
+    .stat-label { font-size: .8rem; color: var(--text-muted); font-weight: 500; text-transform: uppercase; letter-spacing: .06em; }
+
+    /* ─────────────── MAIN CONTENT ─────────────── */
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0 2rem 5rem;
+    }
+
+    /* ─────────────── SECTION TITLE ─────────────── */
+    .section-title {
+      text-align: center;
+      margin-bottom: 3.5rem;
+    }
+    .section-title .label {
+      font-size: .75rem; font-weight: 700; letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .7rem;
+      display: block;
+    }
+    .section-title h2 {
+      font-family: var(--font-title);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.15;
+    }
+    html[dir="rtl"] .section-title h2 { font-family: var(--font-ar); }
+    .section-title p {
+      color: var(--text-muted);
+      margin-top: .9rem;
+      font-size: 1rem;
+      max-width: 540px; margin-left: auto; margin-right: auto;
+    }
+    html[dir="rtl"] .section-title p { font-family: var(--font-ar); font-size: 1.1rem; }
+
+    /* ─────────────── ABOUT SECTION ─────────────── */
+    .section { padding: 5rem 0; }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem;
+      align-items: center;
+    }
+    @media (max-width: 768px) { .about-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+    .about-visual {
+      position: relative;
+      height: 380px;
+      border-radius: 20px;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--bg2) 0%, var(--surface) 100%);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .about-visual-inner {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1rem;
+    }
+    .av-icon {
+      width: 80px; height: 80px;
+      background: var(--accent);
+      border-radius: 20px;
+      display: grid; place-items: center;
+      font-size: 2rem; color: #fff;
+      box-shadow: 0 12px 40px rgba(181,84,30,.4);
+      animation: float 4s ease-in-out infinite;
+    }
+    .av-icon:nth-child(2) { animation-delay: -1.3s; background: var(--accent2); }
+    .av-icon:nth-child(3) { animation-delay: -2.6s; background: var(--gold); }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+    .about-text h2 {
+      font-family: var(--font-title);
+      font-size: 2rem; font-weight: 800;
+      line-height: 1.2; margin-bottom: 1.2rem;
+    }
+    html[dir="rtl"] .about-text h2 { font-family: var(--font-ar); }
+    .about-text p { color: var(--text-muted); margin-bottom: 1rem; font-size: .97rem; }
+    html[dir="rtl"] .about-text p { font-family: var(--font-ar); font-size: 1.1rem; }
+
+    .info-list { margin: 1.5rem 0; }
+    .info-list li {
+      display: flex; align-items: flex-start;
+      padding: .55rem 0;
+      font-size: .93rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      padding-left: 1.6rem;
+    }
+    .info-list li::before {
+      content: '';
+      position: absolute; left: 0; top: 1.1rem;
+      width: 7px; height: 7px;
+      background: var(--accent);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .info-list li:last-child { border-bottom: none; }
+    html[dir="rtl"] .info-list li { font-family: var(--font-ar); font-size: 1.05rem; }
+
+    /* ─────────────── CARDS GRID ─────────────── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem;
+      transition: all .35s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--gold));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .4s;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .card:hover::before { transform: scaleX(1); }
+
+    .card-icon {
+      width: 52px; height: 52px;
+      border-radius: 14px;
+      display: grid; place-items: center;
+      font-size: 1.35rem;
+      margin-bottom: 1.3rem;
+      flex-shrink: 0;
+    }
+    .ci-orange { background: rgba(181,84,30,.12); color: var(--accent); }
+    .ci-green  { background: rgba(42,122,94,.12);  color: var(--accent2); }
+    .ci-gold   { background: rgba(201,145,58,.12); color: var(--gold); }
+    .ci-blue   { background: rgba(30,100,180,.12); color: #2a6bd4; }
+    [data-theme="dark"] .ci-blue { color: #60a8ff; background: rgba(60,130,220,.12); }
+
+    .card h3 {
+      font-family: var(--font-title);
+      font-size: 1.2rem; font-weight: 700;
+      margin-bottom: .65rem;
+    }
+    html[dir="rtl"] .card h3 { font-family: var(--font-ar); }
+    .card p { color: var(--text-muted); font-size: .9rem; line-height: 1.65; }
+    html[dir="rtl"] .card p { font-family: var(--font-ar); font-size: 1rem; }
+
+    /* ─────────────── MAJORS SECTION ─────────────── */
+    .majors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+    .major-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.6rem 1.4rem;
+      display: flex; align-items: center; gap: 1rem;
+      transition: all .3s; cursor: pointer;
+    }
+    .major-card:hover {
+      border-color: var(--accent);
+      transform: translateX(4px);
+      box-shadow: var(--shadow);
+    }
+    html[dir="rtl"] .major-card:hover { transform: translateX(-4px); }
+
+    .major-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: grid; place-items: center;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+    }
+    .major-name { font-weight: 600; font-size: .93rem; }
+    html[dir="rtl"] .major-name { font-family: var(--font-ar); font-size: 1rem; }
+    .major-sub { font-size: .78rem; color: var(--text-muted); margin-top: .15rem; }
+
+    /* ─────────────── HOW IT WORKS ─────────────── */
+    .steps-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      position: relative;
+    }
+    .steps-row::before {
+      content: '';
+      position: absolute; top: 28px; left: 10%; right: 10%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--gold), var(--accent2));
+      z-index: 0;
+    }
+    @media (max-width: 640px) { .steps-row::before { display: none; } }
+
+    .step {
+      position: relative; z-index: 1;
+      text-align: center; padding: 1.5rem 1rem;
+    }
+    .step-num {
+      width: 54px; height: 54px;
+      background: var(--surface);
+      border: 2px solid var(--accent);
+      border-radius: 50%;
+      display: grid; place-items: center;
+      font-family: var(--font-title);
+      font-size: 1.3rem; font-weight: 900;
+      color: var(--accent);
+      margin: 0 auto 1rem;
+      box-shadow: 0 0 0 6px var(--bg);
+    }
+    .step h4 { font-weight: 700; font-size: .95rem; margin-bottom: .4rem; }
+    html[dir="rtl"] .step h4 { font-family: var(--font-ar); }
+    .step p { color: var(--text-muted); font-size: .85rem; }
+    html[dir="rtl"] .step p { font-family: var(--font-ar); font-size: .95rem; }
+
+    /* ─────────────── TERMS ─────────────── */
+    .terms-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--accent);
+      border-radius: var(--radius);
+      padding: 2.2rem 2.5rem;
+      display: flex; gap: 1.5rem; align-items: flex-start;
+    }
+    html[dir="rtl"] .terms-box { border-left: 1px solid var(--border); border-right: 5px solid var(--accent); }
+
+    .terms-box-icon {
+      width: 50px; height: 50px; flex-shrink: 0;
+      background: rgba(181,84,30,.1);
+      color: var(--accent);
+      border-radius: 12px;
+      display: grid; place-items: center;
+      font-size: 1.4rem;
+    }
+    .terms-box h3 { font-family: var(--font-title); font-size: 1.1rem; font-weight: 700; margin-bottom: .5rem; }
+    html[dir="rtl"] .terms-box h3 { font-family: var(--font-ar); }
+    .terms-box p { color: var(--text-muted); font-size: .9rem; }
+    html[dir="rtl"] .terms-box p { font-family: var(--font-ar); font-size: 1rem; }
+
+    /* ─────────────── FOOTER ─────────────── */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: var(--font-title);
+      font-size: 1.3rem; font-weight: 700;
+      color: var(--accent);
+      margin-bottom: .5rem;
+    }
+    footer p { color: var(--text-muted); font-size: .85rem; }
+    html[dir="rtl"] footer p { font-family: var(--font-ar); }
+
+    /* ─────────────── ANIMATIONS ─────────────── */
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal:nth-child(2) { transition-delay: .1s; }
+    .reveal:nth-child(3) { transition-delay: .2s; }
+    .reveal:nth-child(4) { transition-delay: .3s; }
+
+    /* ─────────────── SEPARATOR ─────────────── */
+    .divider {
+      display: flex; align-items: center; gap: 1.2rem;
+      margin: 1.5rem 0;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1;
+      height: 1px; background: var(--border);
+    }
+    .divider i { color: var(--gold); font-size: .85rem; }
+
+    /* ─────────────── RESPONSIVE ─────────────── */
+    @media (max-width: 768px) {
+      .navbar { padding: .75rem 1.2rem; }
+      .nav-links { display: none; }
+      .hero { padding: 5rem 1.2rem 3rem; }
+      .container { padding: 0 1.2rem 4rem; }
+      .stats-band { gap: 1.5rem; flex-wrap: wrap; }
+      .stat-item { border: none; border-bottom: 1px solid var(--border); width: 50%; }
+      .stat-item:nth-child(2n) { border-right: none; }
+      .terms-box { flex-direction: column; }
+    }
+
+    /* hidden lang blocks */
+    [data-lang] { display: none; }
+    [data-lang].active-lang { display: block; }
+
+    /* specific inline elements */
+    span[data-lang].active-lang { display: inline; }
+    li[data-lang].active-lang { display: flex; }
+  </style>
+</head>
+
+<body>
+
+  <!-- Particles -->
+  <div class="particles" id="particles"></div>
+
+  <!-- ════════════ NAVBAR ════════════ -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <div class="nav-logo-icon"><i class="fas fa-book-open"></i></div>
+      EduShare <span>[ESEFJ]</span>
+    </div>
+
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li data-lang="fr" class="active-lang"><a href="index.html" class="active">Accueil</a></li>
+        <li data-lang="en" ><a href="index.html" class="active">Home</a></li>
+        <li data-lang="ar" ><a href="index.html" class="active">الرئيسية</a></li>
+
+        <li data-lang="fr" class="active-lang"><a href="courses.html">Cours</a></li>
+        <li data-lang="en" ><a href="courses.html">Courses</a></li>
+        <li data-lang="ar" ><a href="courses.html">الدروس</a></li>
+
+        <li data-lang="fr" class="active-lang"><a href="contact.html">Équipe & Contact</a></li>
+        <li data-lang="en" ><a href="contact.html">Team & Contact</a></li>
+        <li data-lang="ar" ><a href="contact.html">الفريق والتواصل</a></li>
+      </ul>
+
+      <div class="nav-controls">
+        <button class="lang-btn active" data-switch="fr">FR</button>
+        <button class="lang-btn"        data-switch="en">EN</button>
+        <button class="lang-btn"        data-switch="ar">ع</button>
+        <button class="ctrl-btn" id="themeToggle" title="Toggle theme"><i class="fas fa-moon"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ════════════ HERO ════════════ -->
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-geo"></div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <i class="fas fa-graduation-cap"></i>
+        <span data-lang="fr" class="active-lang">École Supérieure d'Éducation et de Formation — El Jadida</span>
+        <span data-lang="en">Higher School of Education and Training — El Jadida</span>
+        <span data-lang="ar">المدرسة العليا للتربية والتكوين — الجديدة</span>
+      </div>
+
+      <h1>
+        <span data-lang="fr" class="active-lang">Apprendre.<br><span class="accent-word">Partager.</span><br>Réussir.</span>
+        <span data-lang="en">Learn.<br><span class="accent-word">Share.</span><br>Succeed.</span>
+        <span data-lang="ar">تعلّم.<br><span class="accent-word">شارك.</span><br>انجح.</span>
+      </h1>
+
+      <p class="hero-sub">
+        <span data-lang="fr" class="active-lang">La plateforme centralisée pour les étudiants de l'ESEFJ. Accédez à tous vos cours, TD et TP en un seul endroit.</span>
+        <span data-lang="en">The centralized platform for ESEFJ students. Access all your courses, tutorials and labs in one place.</span>
+        <span data-lang="ar">المنصة المركزية لطلاب المدرسة العليا للتربية والتكوين بالجديدة. اعثر على جميع دروسك وتمارينك في مكان واحد.</span>
+      </p>
+
+      <div class="hero-actions">
+        <a href="courses.html" class="btn-primary">
+          <i class="fas fa-rocket"></i>
+          <span data-lang="fr" class="active-lang">Commencer</span>
+          <span data-lang="en">Get Started</span>
+          <span data-lang="ar">ابدأ الآن</span>
+        </a>
+        <a href="contact.html" class="btn-secondary">
+          <i class="fas fa-users"></i>
+          <span data-lang="fr" class="active-lang">L'équipe</span>
+          <span data-lang="en">Our Team</span>
+          <span data-lang="ar">فريقنا</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ════════════ STATS ════════════ -->
+  <div class="stats-band">
+    <div class="stat-item reveal">
+      <div class="stat-number" data-target="500">0</div>
+      <div class="stat-label">
+        <span data-lang="fr" class="active-lang">Étudiants</span>
+        <span data-lang="en">Students</span>
+        <span data-lang="ar">طالب</span>
+      </div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-number" data-target="120">0</div>
+      <div class="stat-label">
+        <span data-lang="fr" class="active-lang">Cours disponibles</span>
+        <span data-lang="en">Courses available</span>
+        <span data-lang="ar">دروس متاحة</span>
+      </div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-number" data-target="8">0</div>
+      <div class="stat-label">
+        <span data-lang="fr" class="active-lang">Filières</span>
+        <span data-lang="en">Majors</span>
+        <span data-lang="ar">تخصص</span>
+      </div>
+    </div>
+    <div class="stat-item reveal">
+      <div class="stat-number" data-target="24">0</div>
+      <div class="stat-label">
+        <span data-lang="fr" class="active-lang">Disponibilité H/24</span>
+        <span data-lang="en">Availability H/24</span>
+        <span data-lang="ar">ساعة متاحة يومياً</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ MAIN CONTENT ════════════ -->
+  <div class="container">
+
+    <!-- ── ABOUT ── -->
+    <section class="section">
+      <div class="about-grid">
+        <div class="about-visual">
+          <div class="about-visual-inner">
+            <div class="av-icon"><i class="fas fa-book-open"></i></div>
+            <div class="av-icon"><i class="fas fa-users"></i></div>
+            <div class="av-icon"><i class="fas fa-star"></i></div>
+          </div>
+        </div>
+
+        <div class="about-text reveal">
+          <h2>
+            <span data-lang="fr" class="active-lang">À propos d'EduShare</span>
+            <span data-lang="en">About EduShare</span>
+            <span data-lang="ar">عن منصة EduShare</span>
+          </h2>
+
+          <p>
+            <span data-lang="fr" class="active-lang">EduShare [ESEFJ] est une initiative étudiante conçue pour combler le fossé entre les ressources et l'apprentissage. Nous pensons que l'accès aux matériaux éducatifs doit être simple, organisé et disponible pour tous.</span>
+            <span data-lang="en">EduShare [ESEFJ] is a student-led initiative designed to bridge the gap between resources and learning. We believe that access to educational materials should be seamless, organized, and available to everyone.</span>
+            <span data-lang="ar">EduShare [ESEFJ] مبادرة طلابية هدفها سدّ الفجوة بين الموارد التعليمية والطلاب. نؤمن بأن الوصول إلى المواد الدراسية يجب أن يكون سهلاً ومنظماً ومتاحاً للجميع في أي وقت.</span>
+          </p>
+
+          <div class="divider"><i class="fas fa-star"></i></div>
+
+          <ul class="info-list">
+            <li data-lang="fr" class="active-lang">Centraliser toutes les ressources académiques (Cours, TDs, TPs).</li>
+            <li data-lang="fr" class="active-lang">Faciliter l'apprentissage entre pairs.</li>
+            <li data-lang="fr" class="active-lang">Réduire le stress lié à la recherche de fichiers manquants.</li>
+
+            <li data-lang="en">Centralize all academic resources (Courses, TDs, TPs).</li>
+            <li data-lang="en">Facilitate peer-to-peer learning.</li>
+            <li data-lang="en">Reduce the stress of finding lost files.</li>
+
+            <li data-lang="ar">تجميع جميع الموارد الأكاديمية (دروس، تمارين، تطبيقات) في مكان واحد.</li>
+            <li data-lang="ar">تشجيع التعلم التعاوني بين الطلاب.</li>
+            <li data-lang="ar">التخلص من قلق البحث عن الملفات الضائعة.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── FEATURES CARDS ── -->
+    <section class="section">
+      <div class="section-title reveal">
+        <span class="label">
+          <span data-lang="fr" class="active-lang">Pourquoi nous choisir</span>
+          <span data-lang="en">Why choose us</span>
+          <span data-lang="ar">لماذا EduShare</span>
+        </span>
+        <h2>
+          <span data-lang="fr" class="active-lang">Une plateforme faite pour vous</span>
+          <span data-lang="en">A platform built for you</span>
+          <span data-lang="ar">منصة صُمِّمت لأجلك</span>
+        </h2>
+        <p>
+          <span data-lang="fr" class="active-lang">Toutes les fonctionnalités dont vous avez besoin pour réussir votre parcours universitaire.</span>
+          <span data-lang="en">All the features you need to succeed in your academic journey.</span>
+          <span data-lang="ar">كل ما تحتاجه لتحقيق النجاح في مسارك الجامعي.</span>
+        </p>
+      </div>
+
+      <div class="cards-grid">
+        <div class="card reveal">
+          <div class="card-icon ci-orange"><i class="fas fa-bolt"></i></div>
+          <h3>
+            <span data-lang="fr" class="active-lang">Accès instantané</span>
+            <span data-lang="en">Instant Access</span>
+            <span data-lang="ar">وصول فوري</span>
+          </h3>
+          <p>
+            <span data-lang="fr" class="active-lang">Téléchargez vos cours en PDF , sans inscription requise.</span>
+            <span data-lang="en">Download your courses as PDFs, no registration required.</span>
+            <span data-lang="ar">حمّل دروسك بصيغة PDF دون الحاجة للتسجيل.</span>
+          </p>
+        </div>
+
+        <div class="card reveal">
+          <div class="card-icon ci-green"><i class="fas fa-sitemap"></i></div>
+          <h3>
+            <span data-lang="fr" class="active-lang">Bien organisé</span>
+            <span data-lang="en">Well Organized</span>
+            <span data-lang="ar">تنظيم محكم</span>
+          </h3>
+          <p>
+            <span data-lang="fr" class="active-lang">Ressources classées par filière, semestre et module pour retrouver facilement ce dont vous avez besoin.</span>
+            <span data-lang="en">Resources organized by major, semester and module so you find exactly what you need.</span>
+            <span data-lang="ar">الموارد مصنّفة حسب التخصص والفصل والوحدة لتجد ما تحتاجه بسرعة.</span>
+          </p>
+        </div>
+
+        <div class="card reveal">
+          <div class="card-icon ci-gold"><i class="fas fa-users-cog"></i></div>
+          <h3>
+            <span data-lang="fr" class="active-lang">Par des étudiants</span>
+            <span data-lang="en">Student-Led</span>
+            <span data-lang="ar">من الطلاب للطلاب</span>
+          </h3>
+          <p>
+            <span data-lang="fr" class="active-lang">Crée et maintenu par des étudiants de l'ESEFJ qui comprennent vos besoins réels.</span>
+            <span data-lang="en">Created and maintained by ESEFJ students who understand your real needs.</span>
+            <span data-lang="ar">أُنشئت وتُشغَّل من قِبَل طلاب يفهمون احتياجاتكم الحقيقية.</span>
+          </p>
+        </div>
+
+        <div class="card reveal">
+          <div class="card-icon ci-blue"><i class="fas fa-mobile-alt"></i></div>
+          <h3>
+            <span data-lang="fr" class="active-lang">Mobile friendly</span>
+            <span data-lang="en">Mobile Friendly</span>
+            <span data-lang="ar">متوافق مع الجوال</span>
+          </h3>
+          <p>
+            <span data-lang="fr" class="active-lang">Accédez à votre espace depuis n'importe quel appareil — téléphone, tablette ou ordinateur.</span>
+            <span data-lang="en">Access your materials from any device — phone, tablet or desktop.</span>
+            <span data-lang="ar">استخدم المنصة من أي جهاز — هاتف أو لوحي أو حاسوب.</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── MAJORS ── -->
+    <section class="section">
+      <div class="section-title reveal">
+        <span class="label">
+          <span data-lang="fr" class="active-lang">Filières disponibles</span>
+          <span data-lang="en">Available Majors</span>
+          <span data-lang="ar">التخصصات المتاحة</span>
+        </span>
+        <h2>
+          <span data-lang="fr" class="active-lang">Trouvez votre filière</span>
+          <span data-lang="en">Find Your Major</span>
+          <span data-lang="ar">اعثر على تخصصك</span>
+        </h2>
+      </div>
+
+      <div class="majors-grid">
+
+        <!-- 1. Enseignement Primaire Bilingue -->
+        <div class="major-card reveal">
+          <div class="major-icon ci-gold"><i class="fas fa-child"></i></div>
+          <div>
+            <div class="major-name">
+              <span data-lang="fr" class="active-lang">Enseignement Primaire Bilingue</span>
+              <span data-lang="en">Bilingual Primary Education</span>
+              <span data-lang="ar">التعليم الابتدائي الثنائي اللغة</span>
+            </div>
+            <div class="major-sub">S1 – S6</div>
+          </div>
+        </div>
+
+        <!-- 2. Langue Anglaise -->
+        <div class="major-card reveal">
+          <div class="major-icon ci-blue"><i class="fas fa-flag-usa"></i></div>
+          <div>
+            <div class="major-name">
+              <span data-lang="fr" class="active-lang">Langue Anglaise</span>
+              <span data-lang="en">English Language</span>
+              <span data-lang="ar">اللغة الإنجليزية</span>
+            </div>
+            <div class="major-sub">S1 – S6</div>
+          </div>
+        </div>
+
+        <!-- 3. Langue Arabe -->
+        <div class="major-card reveal">
+          <div class="major-icon ci-green"><i class="fas fa-pen-fancy"></i></div>
+          <div>
+            <div class="major-name">
+              <span data-lang="fr" class="active-lang">Langue Arabe</span>
+              <span data-lang="en">Arabic Language</span>
+              <span data-lang="ar">اللغة العربية</span>
+            </div>
+            <div class="major-sub">S1 – S6</div>
+          </div>
+        </div>
+
+        <!-- 4. Langue Française -->
+        <div class="major-card reveal">
+          <div class="major-icon ci-orange"><i class="fas fa-language"></i></div>
+          <div>
+            <div class="major-name">
+              <span data-lang="fr" class="active-lang">Langue Française</span>
+              <span data-lang="en">French Language</span>
+              <span data-lang="ar">اللغة الفرنسية</span>
+            </div>
+            <div class="major-sub">S1 – S6</div>
+          </div>
+        </div>
+
+        <!-- 5. Mathématiques -->
+        <div class="major-card reveal">
+          <div class="major-icon ci-gold"><i class="fas fa-square-root-alt"></i></div>
+          <div>
+            <div class="major-name">
+              <span data-lang="fr" class="active-lang">Mathématiques</span>
+              <span data-lang="en">Mathematics</span>
+              <span data-lang="ar">الرياضيات</span>
+            </div>
+            <div class="major-sub">S1 – S6</div>
+          </div>
+        </div>
+
+        <!-- 6. Physiques et Chimiques -->
+        <div class="major-card reveal">
+          <div class="major-icon ci-blue"><i class="fas fa-atom"></i></div>
+          <div>
+            <div class="major-name">
+              <span data-lang="fr" class="active-lang">Physiques et Chimiques</span>
+              <span data-lang="en">Physics & Chemistry</span>
+              <span data-lang="ar">الفيزياء والكيمياء</span>
+            </div>
+            <div class="major-sub">S1 – S6</div>
+          </div>
+        </div>
+
+        <!-- 7. Science de la Vie et de la Terre -->
+        <div class="major-card reveal">
+          <div class="major-icon ci-green"><i class="fas fa-leaf"></i></div>
+          <div>
+            <div class="major-name">
+              <span data-lang="fr" class="active-lang">Science de la Vie et de la Terre</span>
+              <span data-lang="en">Life & Earth Sciences</span>
+              <span data-lang="ar">علوم الحياة والأرض</span>
+            </div>
+            <div class="major-sub">S1 – S6</div>
+          </div>
+        </div>
+
+        <!-- 8. Science Industrielle -->
+        <div class="major-card reveal">
+          <div class="major-icon ci-orange"><i class="fas fa-cogs"></i></div>
+          <div>
+            <div class="major-name">
+              <span data-lang="fr" class="active-lang">Science Industrielle</span>
+              <span data-lang="en">Industrial Science</span>
+              <span data-lang="ar">العلوم الصناعية</span>
+            </div>
+            <div class="major-sub">S1 – S6</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── HOW IT WORKS ── -->
+    <section class="section">
+      <div class="section-title reveal">
+        <span class="label">
+          <span data-lang="fr" class="active-lang">Simple et rapide</span>
+          <span data-lang="en">Simple & Fast</span>
+          <span data-lang="ar">سهل وسريع</span>
+        </span>
+        <h2>
+          <span data-lang="fr" class="active-lang">Comment ça marche ?</span>
+          <span data-lang="en">How does it work?</span>
+          <span data-lang="ar">كيف تعمل المنصة؟</span>
+        </h2>
+      </div>
+
+      <div class="steps-row">
+        <div class="step reveal">
+          <div class="step-num">1</div>
+          <h4>
+            <span data-lang="fr" class="active-lang">Accédez aux Cours</span>
+            <span data-lang="en">Visit Courses Page</span>
+            <span data-lang="ar">انتقل إلى الدروس</span>
+          </h4>
+          <p>
+            <span data-lang="fr" class="active-lang">Rendez-vous sur la page Cours depuis le menu.</span>
+            <span data-lang="en">Head to the Courses page from the navigation.</span>
+            <span data-lang="ar">اذهب إلى صفحة الدروس من القائمة العلوية.</span>
+          </p>
+        </div>
+
+        <div class="step reveal">
+          <div class="step-num">2</div>
+          <h4>
+            <span data-lang="fr" class="active-lang">Choisissez votre Filière</span>
+            <span data-lang="en">Select Your Major</span>
+            <span data-lang="ar">اختر تخصصك</span>
+          </h4>
+          <p>
+            <span data-lang="fr" class="active-lang">Sélectionnez votre filière et semestre.</span>
+            <span data-lang="en">Select your major and semester.</span>
+            <span data-lang="ar">اختر تخصصك والفصل الدراسي.</span>
+          </p>
+        </div>
+
+        <div class="step reveal">
+          <div class="step-num">3</div>
+          <h4>
+            <span data-lang="fr" class="active-lang">Trouvez votre Module</span>
+            <span data-lang="en">Find Your Module</span>
+            <span data-lang="ar">اعثر على الوحدة</span>
+          </h4>
+          <p>
+            <span data-lang="fr" class="active-lang">Naviguez dans les modules disponibles.</span>
+            <span data-lang="en">Browse through the available modules.</span>
+            <span data-lang="ar">تصفح الوحدات الدراسية المتاحة.</span>
+          </p>
+        </div>
+
+        <div class="step reveal">
+          <div class="step-num">4</div>
+          <h4>
+            <span data-lang="fr" class="active-lang">Téléchargez & Apprenez</span>
+            <span data-lang="en">Download & Learn</span>
+            <span data-lang="ar">حمّل وتعلّم</span>
+          </h4>
+          <p>
+            <span data-lang="fr" class="active-lang">Téléchargez en PDF ou regardez directement.</span>
+            <span data-lang="en">Download as PDF or watch videos directly.</span>
+            <span data-lang="ar">نزّل بصيغة PDF أو شاهد الفيديو مباشرة.</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── TERMS ── -->
+    <section class="section">
+      <div class="terms-box reveal">
+        <div class="terms-box-icon"><i class="fas fa-balance-scale"></i></div>
+        <div>
+          <h3>
+            <span data-lang="fr" class="active-lang">Conditions d'utilisation</span>
+            <span data-lang="en">Terms of Use</span>
+            <span data-lang="ar">شروط الاستخدام</span>
+          </h3>
+          <p>
+            <span data-lang="fr" class="active-lang">Cette plateforme est réservée à des fins éducatives uniquement. Tous les documents partagés appartiennent à leurs professeurs respectifs. Veuillez utiliser ces ressources de manière responsable et uniquement pour votre développement académique.</span>
+            <span data-lang="en">This platform is for educational purposes only. All documents shared belong to their respective professors. Please use these resources responsibly and purely for academic growth.</span>
+            <span data-lang="ar">هذه المنصة مخصصة للأغراض التعليمية فقط. جميع الوثائق المشتركة تعود لأصحابها من الأساتذة. يُرجى استخدام هذه الموارد بمسؤولية وحصراً لأغراض أكاديمية.</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ════════════ FOOTER ════════════ -->
+  <footer>
+    <div class="footer-logo">EduShare <span style="font-size:.85rem;color:var(--text-muted)">[ESEFJ]</span></div>
+    <p>
+      <span data-lang="fr" class="active-lang">© 2026 EduShare [ESEFJ]. Fait par des étudiants, pour des étudiants.</span>
+      <span data-lang="en">© 2026 EduShare [ESEFJ]. Built by Students, for Students.</span>
+      <span data-lang="ar">© 2026 EduShare [ESEFJ]. صُنع من الطلاب، للطلاب.</span>
+    </p>
+  </footer>
+
+  <script>
+  // ─── PARTICLES ───
+  (function(){
+    const cont = document.getElementById('particles');
+    for(let i=0;i<28;i++){
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.left  = Math.random()*100 + 'vw';
+      p.style.animationDelay    = Math.random()*12  + 's';
+      p.style.animationDuration = (8 + Math.random()*12) + 's';
+      cont.appendChild(p);
+    }
+  })();
+
+  // ─── LANGUAGE SWITCHER ───
+  const langBtns  = document.querySelectorAll('.lang-btn');
+  const langItems = document.querySelectorAll('[data-lang]');
+  let   currentLang = 'fr';
+
+  function switchLang(lang){
+    currentLang = lang;
+    // direction / html lang
+    const html = document.documentElement;
+    if(lang === 'ar'){
+      html.dir  = 'rtl';
+      html.lang = 'ar';
+      document.body.style.fontFamily = "'Amiri', serif";
+    } else {
+      html.dir  = 'ltr';
+      html.lang = lang;
+      document.body.style.fontFamily = "";
+    }
+    // show/hide lang blocks
+    langItems.forEach(el => {
+      if(el.dataset.lang === lang) el.classList.add('active-lang');
+      else                         el.classList.remove('active-lang');
+    });
+    // active button
+    langBtns.forEach(b => b.classList.toggle('active', b.dataset.switch === lang));
+  }
+
+  langBtns.forEach(btn => btn.addEventListener('click', () => switchLang(btn.dataset.switch)));
+
+  // ─── DARK / LIGHT MODE ───
+  const themeBtn  = document.getElementById('themeToggle');
+  const themeIcon = themeBtn.querySelector('i');
+  let   dark = false;
+
+  themeBtn.addEventListener('click', () => {
+    dark = !dark;
+    document.documentElement.dataset.theme = dark ? 'dark' : '';
+    themeIcon.className = dark ? 'fas fa-sun' : 'fas fa-moon';
+  });
+
+  // ─── REVEAL ON SCROLL ───
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ─── COUNTER ANIMATION ───
+  const counters = document.querySelectorAll('.stat-number[data-target]');
+  const cObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if(!e.isIntersecting) return;
+      const el  = e.target;
+      const end = +el.dataset.target;
+      const dur = 1400;
+      const step = Math.ceil(dur / end);
+      let cur = 0;
+      const t = setInterval(() => {
+        cur = Math.min(cur + Math.ceil(end/60), end);
+        el.textContent = cur + (end === 24 ? '/7' : '+');
+        if(cur >= end) clearInterval(t);
+      }, step);
+      cObs.unobserve(el);
+    });
+  }, { threshold: .5 });
+  counters.forEach(c => cObs.observe(c));
+  </script>
+</body>
+</html>
